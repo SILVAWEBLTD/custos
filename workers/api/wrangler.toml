@@ -1,0 +1,21 @@
+name = "api-worker"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "main-db"
+database_id = "" # This will be populated by Terraform
+
+# Environment variables
+[env.production.vars]
+CORS_ORIGIN = "https://your-domain.com"
+
+[env.development.vars]
+CORS_ORIGIN = "*"
+
+# Build configuration
+[build]
+command = "echo 'No build step required'"
