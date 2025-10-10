@@ -4,7 +4,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.0"
+      version = "~> 4.36"
     }
   }
 }
@@ -20,6 +20,7 @@ module "cloudflare_d1" {
   account_id = var.cloudflare_account_id
   db_name    = var.db_name
   init_sql   = var.db_init_sql
+  seeds_sql  = var.db_seed_sql
 }
 
 # Workers API Module
@@ -30,7 +31,7 @@ module "cloudflare_workers" {
   worker_name      = var.api_worker_name
   worker_script    = var.api_worker_script_path
   d1_database_id   = module.cloudflare_d1.database_id
-  d1_database_name = var.db_name
+  d1_database_name = "DB" # Set as a string as it binds the worker to the database name as 
   environment_vars = var.api_environment_vars
   subdomain        = var.api_subdomain
   zone_id          = var.cloudflare_zone_id

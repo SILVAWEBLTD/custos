@@ -1,15 +1,23 @@
-resource "cloudflare_worker_script" "api" {
+terraform {
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.36"
+    }
+  }
+}
+
+resource "cloudflare_workers_script" "api" {
   account_id = var.account_id
   name       = var.worker_name
   content    = file(var.worker_script)
+  module     = true
 
-  # Bind D1 database to worker
   d1_database_binding {
-    name        = var.d1_database_name
+    name        = "DB"
     database_id = var.d1_database_id
   }
 
-  # Plain text environment variables
   dynamic "plain_text_binding" {
     for_each = var.environment_vars
     content {
@@ -22,10 +30,10 @@ resource "cloudflare_worker_script" "api" {
   compatibility_flags = ["nodejs_compat"]
 }
 
-resource "cloudflare_worker_route" "api_route" {
+resource "cloudflare_workers_route" "api_route" {
   zone_id     = var.zone_id
   pattern     = "${var.subdomain}.${data.cloudflare_zone.main.name}/*"
-  script_name = cloudflare_worker_script.api.name
+  script_name = cloudflare_workers_script.api.name
 }
 
 data "cloudflare_zone" "main" {
