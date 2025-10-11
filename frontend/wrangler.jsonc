@@ -10,7 +10,11 @@
   },
   "env": {
     "production": {
-      "name": "cloudflare-fullstack-frontend"
+      "name": "cloudflare-fullstack-frontend",
+      "routes": [
+        "silvaweb.org/*",
+        "www.silvaweb.org/*"
+      ]
     },
     "staging": {
       "name": "cloudflare-fullstack-frontend-staging"
