@@ -2,8 +2,8 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "cloudflare-fullstack-frontend",
-  "compatibility_date": "2024-10-01",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2025-10-11",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
@@ -11,10 +11,7 @@
   "env": {
     "production": {
       "name": "cloudflare-fullstack-frontend",
-      "routes": [
-        "silvaweb.org/*",
-        "www.silvaweb.org/*"
-      ]
+      "routes": ["silvaweb.org/*", "www.silvaweb.org/*"]
     },
     "staging": {
       "name": "cloudflare-fullstack-frontend-staging"
