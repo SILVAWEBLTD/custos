@@ -14,21 +14,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'frontend/package-lock.json'
+          bun-version: 'latest'
 
-      - name: Install deps
-        run: npm ci
+      - name: Install deps (Bun)
+        run: bun install --frozen-lockfile
 
       - name: Install OpenNext + Wrangler
         run: npm i -D @opennextjs/cloudflare wrangler
 
       - name: Build (OpenNext)
-        run: npx opennextjs-cloudflare build
+        run: bunx opennextjs-cloudflare build
 
       - name: Deploy to Cloudflare Workers (production)
         env:
