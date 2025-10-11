@@ -4,9 +4,11 @@
   "description": "Cloudflare Worker API for full-stack application",
   "main": "src/index.js",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --port 8771",
+    "preview:worker": "npm run build:worker && npm run preview:worker",
     "deploy": "wrangler deploy",
     "build": "wrangler deploy --dry-run",
+    "build:bundle": "esbuild src/index.ts --bundle --format=esm --platform=neutral --outfile=dist/worker.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,7 +20,15 @@
   ],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.4",
+    "hono": "^4.9.10",
+    "zod": "^4.1.12"
+  },
   "devDependencies": {
-    "wrangler": "^3.0.0"
+    "@cloudflare/workers-types": "^4.20251008.0",
+    "esbuild": "^0.21.0",
+    "typescript": "^5.9.3",
+    "wrangler": "4.42.2"
   }
 }
