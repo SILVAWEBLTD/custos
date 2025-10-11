@@ -1,17 +1,17 @@
-name = "api-worker"
-main = "src/index.js"
+name = "rest_api_worker"
+main = "src/index.ts"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 
 # D1 Database binding
 [[d1_databases]]
 binding = "DB"
-database_name = "main-db"
-database_id = "" # This will be populated by Terraform
+database_name = "cloudflare_db"
+database_id = ""
 
 # Environment variables
 [env.production.vars]
-CORS_ORIGIN = "https://your-domain.com"
+CORS_ORIGIN = "https://silvaweb.org"
 
 [env.development.vars]
 CORS_ORIGIN = "*"
