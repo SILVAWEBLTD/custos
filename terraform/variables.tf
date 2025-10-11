@@ -33,7 +33,7 @@ variable "api_subdomain" {
 variable "production_branch" {
   description = "Git branch for production deployments"
   type        = string
-  default     = "main"
+  default     = "production"
 }
 
 variable "github_repo" {
@@ -69,9 +69,9 @@ variable "api_worker_name" {
 }
 
 variable "api_worker_script_path" {
-  description = "Path to the Worker script file"
   type        = string
-  default     = "../workers/api/dist/index.js"
+  description = "Entry JS for the API Worker"
+  default     = "./workers/api/src/index.js"
 }
 
 variable "api_environment_vars" {
@@ -84,11 +84,17 @@ variable "api_environment_vars" {
 variable "db_name" {
   description = "Name of the D1 database"
   type        = string
-  default     = "main-db"
+  default     = "cloudflare_db"
 }
 
 variable "db_init_sql" {
   description = "Path to SQL initialization file"
   type        = string
-  default     = "../database/init.sql"
+  default     = "./database/init.sql"
+}
+
+variable "db_seed_sql" {
+  description = "Path to SQL seed data file"
+  type        = string
+  default     = "./database/seeds.sql"
 }
