@@ -36,10 +36,26 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: bunx wrangler deploy -c wrangler.jsonc -e staging
 
+      - name: Create branch preview alias (PRs only)
+        if: github.event_name == 'pull_request'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          RAW="${{ github.head_ref }}"
+          ALIAS="$(echo "$RAW" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9-]#-#g' | sed 's#^-##; s#-$##')"
+          if [ -n "$ALIAS" ]; then
+            bunx wrangler versions upload -c wrangler.jsonc -e staging --preview-alias "$ALIAS"
+            echo "Created preview alias: $ALIAS"
+          else
+            echo "No valid branch alias generated; skipping preview alias."
+          fi
+
       - name: Post-deploy summary
         if: success()
         run: |
-          echo "::notice title=Deployment::Staging deploy succeeded on ${GITHUB_REF_NAME} (${GITHUB_SHA})"
+          RAW="${{ github.head_ref }}"
+          ALIAS="$(echo "$RAW" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9-]#-#g' | sed 's#^-##; s#-$##')"
           {
             echo "## ✅ Staging Deployment Succeeded"
             echo ""
@@ -48,4 +64,10 @@ jobs:
             echo "- Commit: ${GITHUB_SHA}"
             echo "- Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             echo "- Worker: cloudflare-fullstack-frontend-staging"
+            echo ""
+            echo "### 🔗 Links"
+            echo "- <a href=\"https://cloudflare-fullstack-frontend-staging.maxsilvauk.workers.dev\" target=\"_blank\" rel=\"noopener noreferrer\">Open Staging</a>"
+            if [ "${{ github.event_name }}" = "pull_request" ] && [ -n "$ALIAS" ]; then
+              echo "- <a href=\"https://${ALIAS}-cloudflare-fullstack-frontend.maxsilvauk.workers.dev\" target=\"_blank\" rel=\"noopener noreferrer\">Preview (branch)</a>"
+            fi
           } >> "${GITHUB_STEP_SUMMARY}"

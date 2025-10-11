@@ -14,7 +14,8 @@
       "routes": ["silvaweb.org/*", "www.silvaweb.org/*"]
     },
     "staging": {
-      "name": "cloudflare-fullstack-frontend-staging"
+      "name": "cloudflare-fullstack-frontend-staging",
+      "preview_urls": true,
     }
   }
 }
