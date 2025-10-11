@@ -28,7 +28,7 @@ jobs:
         run: npm i -D @opennextjs/cloudflare wrangler
 
       - name: Build (OpenNext)
-        run: npx opennextjs-cloudflare
+        run: npx opennextjs-cloudflare build
 
       - name: Deploy to Cloudflare Workers (production)
         env:
