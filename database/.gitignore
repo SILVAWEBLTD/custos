@@ -1,0 +1,2 @@
+# Ignore the seeds file as this is dynamically created by generate-seeds.mjs
+seeds.sql

@@ -130,3 +130,6 @@ wrangler.toml.bak
 *.zip
 *.tar.gz
 *.rar
+
+# Ignore Steps file
+steps.md
