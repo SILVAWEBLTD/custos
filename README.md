@@ -4,6 +4,7 @@
 - **cloudflare workers**: Running the Hono rest API
 - **cloudflare pages - NextJS Frontend**: NextJS15 frontend
 - **cloudflare D1**: SQLite's database for pages and workers to query
+
 ```
 cloudflare-fullstack/
 ├── README.md
@@ -42,3 +43,5 @@ cloudflare-fullstack/
             ├── variables.tf
             └── outputs.tf
 ```
+
+Staging branch test
