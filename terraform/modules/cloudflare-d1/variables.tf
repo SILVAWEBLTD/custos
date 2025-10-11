@@ -13,3 +13,9 @@ variable "init_sql" {
   type        = string
   default     = ""
 }
+
+variable "seeds_sql" {
+  description = "Path to SQL seed data file"
+  type        = string
+  default     = ""
+}
