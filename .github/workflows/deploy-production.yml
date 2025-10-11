@@ -2,7 +2,7 @@ name: Deploy Production (Next on Pages)
 
 on:
   push:
-    branches: [ production ]
+    branches: [production]
 
 jobs:
   build-and-deploy:
@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Build (Next on Pages)
-        run: npx @cloudflare/next-on-pages@latest build
+        run: npx @cloudflare/next-on-pages@latest
 
       - name: Deploy to Cloudflare Pages (production)
         uses: cloudflare/pages-action@v1
