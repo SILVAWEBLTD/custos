@@ -6,9 +6,7 @@ export default function Header() {
     <header className="border-b border-gray-700 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
       <div className="container mx-auto px-6 flex h-14 items-center">
         <div className="mr-4 flex">
-          <h1 className="text-xl font-bold text-white">
-            CloudFlare Web3 Application New
-          </h1>
+          <h1 className="text-xl font-bold text-white">Custos</h1>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
