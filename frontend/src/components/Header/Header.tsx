@@ -1,5 +1,9 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Wallet, User } from 'lucide-react';
+import { ConnectWallet } from '@/components/ConnectWallet';
+import { DialogTrigger } from '@/components/ui/dialog';
 
 export default function Header() {
   return (
@@ -10,14 +14,20 @@ export default function Header() {
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
-            >
-              <Wallet className="mr-2 h-4 w-4" />
-              Connect Wallet
-            </Button>
+            <ConnectWallet
+              trigger={
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
+                  >
+                    <Wallet className="mr-2 h-4 w-4" />
+                    Connect Wallet
+                  </Button>
+                </DialogTrigger>
+              }
+            />
           </div>
           <nav className="flex items-center space-x-2">
             <div className="border border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white rounded-full p-2 transition-all cursor-pointer">
