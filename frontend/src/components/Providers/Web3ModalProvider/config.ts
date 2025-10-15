@@ -1,6 +1,6 @@
 import { http, createConfig } from 'wagmi';
 import { mainnet, sepolia } from 'wagmi/chains';
-import { coinbaseWallet, walletConnect, injected } from 'wagmi/connectors';
+import { createWeb3ModalConnectors } from '@/lib/utils';
 import { cookieStorage, createStorage } from 'wagmi';
 
 // export const walletConnectProjectId: string =
@@ -27,28 +27,11 @@ const metadata = {
 const chains = [mainnet, sepolia] as const;
 
 // Only create connectors on the client side
-const getConnectors = () => {
-  if (typeof window === 'undefined') {
-    return [];
-  }
-
-  return [
-    walletConnect({
-      projectId: process.env.WALLETCONNECT_PROJECT_ID || 'unknown',
-      metadata,
-      showQrModal: false,
-    }),
-    injected({ shimDisconnect: true }),
-    coinbaseWallet({
-      appName: metadata.name,
-      appLogoUrl: metadata.icons[0],
-    }),
-  ];
-};
+const connectors = createWeb3ModalConnectors(metadata);
 
 export const config = createConfig({
   chains,
-  connectors: getConnectors(),
+  connectors: connectors,
   ssr: true,
   storage: createStorage({
     storage: cookieStorage,
