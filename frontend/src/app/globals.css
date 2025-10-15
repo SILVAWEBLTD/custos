@@ -124,14 +124,21 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Force white axis tick text within charts marked chart-white-axes */
+/* Force axis within charts with white text */
 .chart-white-axes .recharts-cartesian-axis-tick text {
   fill: var(--color-gray-200) !important;
+}
+
+/* Also target within w3m-modal context */
+wui-icon[name='helpCircle'] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }

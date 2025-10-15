@@ -2,10 +2,15 @@
 
 import { Button } from '@/components/ui/button';
 import { Wallet, User } from 'lucide-react';
-import { ConnectWallet } from '@/components/ConnectWallet';
-import { DialogTrigger } from '@/components/ui/dialog';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAccount, useBalance } from 'wagmi';
+import { formatEther } from 'viem';
 
 export default function Header() {
+  const { open } = useWeb3Modal();
+  const { address, isConnected } = useAccount();
+  const { data: balance } = useBalance({ address });
+
   return (
     <header className="border-b border-gray-700 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
       <div className="container mx-auto px-6 flex h-14 items-center">
@@ -14,20 +19,38 @@ export default function Header() {
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <ConnectWallet
-              trigger={
-                <DialogTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
-                  >
-                    <Wallet className="mr-2 h-4 w-4" />
-                    Connect Wallet
-                  </Button>
-                </DialogTrigger>
-              }
-            />
+            {!isConnected ? (
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
+                onClick={() => open()}
+              >
+                <Wallet className="mr-2 h-4 w-4" />
+                Connect Wallet
+              </Button>
+            ) : (
+              <div className="flex items-center">
+                <div className="flex flex-col items-end">
+                  <p className="text-sm text-gray-200">
+                    {address?.slice(0, 6)}...{address?.slice(-4)}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {balance
+                      ? `${formatEther(balance.value)} ${balance.symbol}`
+                      : ''}
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="ml-2 border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
+                  onClick={() => open({ view: 'Account' })}
+                >
+                  Switch Wallet
+                </Button>
+              </div>
+            )}
           </div>
           <nav className="flex items-center space-x-2">
             <div className="border border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white rounded-full p-2 transition-all cursor-pointer">
