@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 type WalletStatus = 'idle' | 'installing' | 'installed';
 
@@ -119,9 +120,11 @@ export default function ConnectWallet({
                   className={`w-10 h-10 rounded-full ${wallet.color} flex items-center justify-center text-white font-bold`}
                 >
                   {wallet.icon.startsWith('/') ? (
-                    <img
+                    <Image
                       src={wallet.icon}
                       alt={wallet.name}
+                      width={24}
+                      height={24}
                       className="w-6 h-6"
                     />
                   ) : (
