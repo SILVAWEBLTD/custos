@@ -1,8 +1,10 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  webpack: (config) => {
-    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    }
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
