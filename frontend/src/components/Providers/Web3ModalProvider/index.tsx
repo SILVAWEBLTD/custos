@@ -4,7 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { WagmiProvider, useAccount, useAccountEffect, useChainId } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { config, walletConnectProjectId } from './config';
+import { config } from './config';
 import { walletToast } from '@/lib/toast-factory';
 import { toast } from 'sonner';
 
