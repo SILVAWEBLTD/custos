@@ -34,10 +34,7 @@ const getConnectors = () => {
 
   return [
     walletConnect({
-      projectId:
-        process.env.WALLETCONNECT_PROJECT_ID ||
-        process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
-        '1f7ec19a11311c8e148ab385a70b35ce',
+      projectId: process.env.WALLETCONNECT_PROJECT_ID || 'unknown',
       metadata,
       showQrModal: false,
     }),
