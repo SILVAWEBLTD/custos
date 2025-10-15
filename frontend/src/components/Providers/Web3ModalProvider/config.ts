@@ -5,8 +5,9 @@ import { cookieStorage, createStorage } from 'wagmi';
 
 export const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
 
-if (typeof window !== 'undefined' && !projectId)
-  throw new Error('Project ID is not defined');
+console.log('projectId', projectId);
+
+if (!projectId) throw new Error('Project ID is not defined');
 
 const metadata = {
   name: 'Custos',
