@@ -146,10 +146,12 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
     if (!modalCreated) {
       createWeb3Modal({
         wagmiConfig: config,
-        projectId: '1f7ec19a11311c8e148ab385a70b35ce',
+        projectId:
+          process.env.WALLETCONNECT_PROJECT_ID ||
+          process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
+          '',
         enableAnalytics: true,
         themeMode: 'dark',
-        // Featured wallets to show first (dialog will be scrollable with many wallets)
         featuredWalletIds: [
           'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
           '971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a09c0faed0709', // OKEx Wallet
@@ -157,7 +159,6 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
           'f2436c67184f158d1beda5df53298ee84abfc367581e4505134b5bcf5f46697d', // Binance
           'c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a', // Uniswap Wallet
         ],
-        // Hide help button and customize appearance
         enableOnramp: false,
         themeVariables: {
           '--w3m-font-family': '"Geist", "Geist Fallback"',
