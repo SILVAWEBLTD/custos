@@ -146,7 +146,7 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
     if (!modalCreated) {
       createWeb3Modal({
         wagmiConfig: config,
-        walletConnectProjectId,
+        projectId: walletConnectProjectId,
         enableAnalytics: true,
         themeMode: 'dark',
         // Featured wallets to show first (dialog will be scrollable with many wallets)
