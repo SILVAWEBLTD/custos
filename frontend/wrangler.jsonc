@@ -11,13 +11,16 @@
   "env": {
     "production": {
       "name": "cloudflare-fullstack-frontend",
-      "routes": ["silvaweb.org/*", "www.silvaweb.org/*"]
+      "routes": ["silvaweb.org/*", "www.silvaweb.org/*"],
+      "vars": {
+        "WALLETCONNECT_PROJECT_ID": "1f7ec19a11311c8e148ab385a70b35ce"
+      }
     },
     "staging": {
       "name": "cloudflare-fullstack-frontend-staging",
       "preview_urls": true,
       "vars": {
-        "WALLETCONNECT_PROJECT_ID": ""
+        "WALLETCONNECT_PROJECT_ID": "1f7ec19a11311c8e148ab385a70b35ce"
       }
     }
   }
