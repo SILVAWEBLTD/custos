@@ -4,9 +4,12 @@ import { coinbaseWallet, walletConnect, injected } from 'wagmi/connectors';
 import { cookieStorage, createStorage } from 'wagmi';
 
 export const projectId: string =
-  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'undefined';
 
-console.log('Project ID:', process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID);
+console.log(
+  'WalletConnect Project ID:',
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
+);
 
 // Check if API is reachable from window and projectId is not defined
 if (typeof window !== 'undefined' && !projectId)
