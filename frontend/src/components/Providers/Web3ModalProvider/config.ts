@@ -6,6 +6,8 @@ import { cookieStorage, createStorage } from 'wagmi';
 export const projectId: string =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
 
+console.log('Project ID:', process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID);
+
 // Check if API is avail
 if (typeof window !== 'undefined' && !projectId)
   throw new Error('Project ID is not defined');
