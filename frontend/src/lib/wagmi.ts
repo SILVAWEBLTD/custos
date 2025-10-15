@@ -4,10 +4,10 @@ import { injected } from 'wagmi/connectors';
 // import { coinbaseWallet } from 'wagmi/connectors';
 import { walletConnect } from 'wagmi/connectors';
 
-// Get projectId from environment variable
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+// Get walletConnectProjectId from environment variable
+const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
-if (!projectId) {
+if (!walletConnectProjectId) {
   throw new Error(
     'NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not defined in environment variables'
   );
@@ -18,7 +18,7 @@ export const config = createConfig({
   connectors: [
     injected(),
     walletConnect({
-      projectId,
+      walletConnectProjectId,
       metadata: {
         name: 'Custos',
         description: 'Web3 DApp',

@@ -3,7 +3,7 @@ import { mainnet, sepolia } from 'wagmi/chains';
 import { coinbaseWallet, walletConnect, injected } from 'wagmi/connectors';
 import { cookieStorage, createStorage } from 'wagmi';
 
-export const projectId: string =
+export const walletConnectProjectId: string =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
   process.env.WALLETCONNECT_PROJECT_ID ||
   '';
@@ -13,8 +13,8 @@ console.log(
   process.env.PUBLIC_WALLETCONNECT_PROJECT_ID
 );
 
-// Check if API is reachable from window and projectId is not defined
-if (typeof window !== 'undefined' && !projectId)
+// Check if API is reachable from window and walletConnectProjectId is not defined
+if (typeof window !== 'undefined' && !walletConnectProjectId)
   throw new Error('Project ID is not defined');
 
 const metadata = {
@@ -34,7 +34,7 @@ const getConnectors = () => {
 
   return [
     walletConnect({
-      '1f7ec19a11311c8e148ab385a70b35ce',
+      projectId: walletConnectProjectId,
       metadata,
       showQrModal: false,
     }),

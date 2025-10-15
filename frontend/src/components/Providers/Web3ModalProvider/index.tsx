@@ -4,7 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { WagmiProvider, useAccount, useAccountEffect, useChainId } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { config, projectId } from './config';
+import { config, walletConnectProjectId } from './config';
 import { walletToast } from '@/lib/toast-factory';
 import { toast } from 'sonner';
 
@@ -146,7 +146,7 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
     if (!modalCreated) {
       createWeb3Modal({
         wagmiConfig: config,
-        projectId,
+        walletConnectProjectId,
         enableAnalytics: true,
         themeMode: 'dark',
         // Featured wallets to show first (dialog will be scrollable with many wallets)

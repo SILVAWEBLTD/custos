@@ -1,1 +1,1 @@
-export { config, projectId } from '../Web3ModalProvider/config';
+export { config, walletConnectProjectId } from '../Web3ModalProvider/config';
