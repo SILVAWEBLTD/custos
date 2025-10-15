@@ -18,7 +18,7 @@ export const config = createConfig({
   connectors: [
     injected(),
     walletConnect({
-      walletConnectProjectId,
+      projectId: walletConnectProjectId,
       metadata: {
         name: 'Custos',
         description: 'Web3 DApp',
