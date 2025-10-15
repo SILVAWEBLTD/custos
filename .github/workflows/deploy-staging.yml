@@ -25,7 +25,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Install OpenNext + Wrangler
-        run: npm i -D @opennextjs/cloudflare wrangler
+        run: bun i -D @opennextjs/cloudflare wrangler
 
       - name: Build (OpenNext)
         run: bunx opennextjs-cloudflare build
