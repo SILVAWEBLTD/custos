@@ -3,7 +3,7 @@ import { mainnet, sepolia } from 'wagmi/chains';
 import { coinbaseWallet, walletConnect, injected } from 'wagmi/connectors';
 import { cookieStorage, createStorage } from 'wagmi';
 
-export const projectId: string =
+export const projectId: string | undefined =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
   process.env.WALLETCONNECT_PROJECT_ID;
 
