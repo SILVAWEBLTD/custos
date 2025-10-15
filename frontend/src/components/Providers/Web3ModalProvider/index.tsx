@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { config } from './config';
 import { walletToast } from '@/lib/toast-factory';
 import { toast } from 'sonner';
-import { getWalletConnectProjectId } from '@/lib/utils';
 
 // Create queryClient
 const queryClient = new QueryClient();
