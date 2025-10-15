@@ -3,16 +3,16 @@ import { mainnet, sepolia } from 'wagmi/chains';
 import { coinbaseWallet, walletConnect, injected } from 'wagmi/connectors';
 import { cookieStorage, createStorage } from 'wagmi';
 
-export const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
+export const projectId: string =
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
 
-console.log('projectId', projectId);
-
+// Check if API is avail
 if (typeof window !== 'undefined' && !projectId)
   throw new Error('Project ID is not defined');
 
 const metadata = {
   name: 'Custos',
-  description: 'Cloudflare Fullstack Application',
+  description: 'DeFi platform',
   url: 'https://silvaweb.org',
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
