@@ -15,7 +15,10 @@
     },
     "staging": {
       "name": "cloudflare-fullstack-frontend-staging",
-      "preview_urls": true
+      "preview_urls": true,
+      "vars": {
+        "WALLETCONNECT_PROJECT_ID": ""
+      }
     }
   }
 }
