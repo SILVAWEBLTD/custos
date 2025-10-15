@@ -25,7 +25,10 @@ export const getWalletConnectProjectId = (): string => {
 export const createWeb3ModalConnectors = (metadata: TMetadata) => {
   return [
     walletConnect({
-      projectId: getWalletConnectProjectId(),
+      projectId:
+        process.env.WALLETCONNECT_PROJECT_ID ||
+        process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
+        '',
       metadata,
       showQrModal: false,
     }),

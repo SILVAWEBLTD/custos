@@ -147,7 +147,10 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
     if (!modalCreated) {
       createWeb3Modal({
         wagmiConfig: config,
-        projectId: getWalletConnectProjectId(),
+        projectId:
+          process.env.WALLETCONNECT_PROJECT_ID ||
+          process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
+          '',
         enableAnalytics: true,
         themeMode: 'dark',
         featuredWalletIds: [
