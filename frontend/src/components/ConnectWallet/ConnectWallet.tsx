@@ -156,9 +156,6 @@ export default function ConnectWallet({
           <Button
             variant="outline"
             className="w-full border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
-            onClick={() => {
-              console.log('Request new wallet clicked');
-            }}
           >
             Request new wallet
           </Button>

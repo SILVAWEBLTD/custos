@@ -72,7 +72,6 @@ function WalletConnectionListener() {
 
       // Update state and log
       setIsModalInViewport(modalExists);
-      console.log('Web3Modal in viewport:', modalExists);
     };
 
     // Check immediately
