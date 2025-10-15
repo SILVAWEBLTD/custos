@@ -34,7 +34,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: bunx wrangler deploy -c wrangler.jsonc -e staging
+        run: bunx wrangler deploy -c wrangler.jsonc -e staging --keep-vars
 
       - name: Create branch preview alias (PRs only)
         if: github.event_name == 'pull_request'
