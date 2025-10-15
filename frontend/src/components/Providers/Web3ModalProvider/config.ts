@@ -8,7 +8,7 @@ export const projectId: string =
 
 console.log('Project ID:', process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID);
 
-// Check if API is reachable
+// Check if API is reachable from window and projectId is not defined
 if (typeof window !== 'undefined' && !projectId)
   throw new Error('Project ID is not defined');
 
