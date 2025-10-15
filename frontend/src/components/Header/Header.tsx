@@ -1,15 +1,32 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Wallet, User } from 'lucide-react';
+import { Wallet, User, Copy } from 'lucide-react';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount, useBalance } from 'wagmi';
 import { formatEther } from 'viem';
+import { copyToClipboard } from '@/lib/utils';
+import { useState } from 'react';
 
 export default function Header() {
   const { open } = useWeb3Modal();
   const { address, isConnected } = useAccount();
   const { data: balance } = useBalance({ address });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleConnectWallet = () => {
+    open();
+  };
+
+  const handleSwitchWallet = () => {
+    open({ view: 'Account' });
+  };
+
+  const handleCopyAddress = () => {
+    if (address) {
+      copyToClipboard(address, 'Address copied!');
+    }
+  };
 
   return (
     <header className="border-b border-gray-700 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
@@ -24,7 +41,7 @@ export default function Header() {
                 variant="outline"
                 size="sm"
                 className="border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
-                onClick={() => open()}
+                onClick={handleConnectWallet}
               >
                 <Wallet className="mr-2 h-4 w-4" />
                 Connect Wallet
@@ -32,9 +49,24 @@ export default function Header() {
             ) : (
               <div className="flex items-center">
                 <div className="flex flex-col items-end">
-                  <p className="text-sm text-gray-200">
-                    {address?.slice(0, 6)}...{address?.slice(-4)}
-                  </p>
+                  <div
+                    className="flex items-center gap-2 group cursor-pointer"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    <button
+                      onClick={handleCopyAddress}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      aria-label="Copy address"
+                    >
+                      <Copy className="h-3 w-3 text-gray-400 hover:text-gray-200" />
+                    </button>
+                    <p className="text-sm text-gray-200 transition-all duration-200">
+                      {isHovered
+                        ? address
+                        : `${address?.slice(0, 6)}...${address?.slice(-4)}`}
+                    </p>
+                  </div>
                   <p className="text-xs text-gray-400">
                     {balance
                       ? `${formatEther(balance.value)} ${balance.symbol}`
@@ -45,7 +77,7 @@ export default function Header() {
                   variant="outline"
                   size="sm"
                   className="ml-2 border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
-                  onClick={() => open({ view: 'Account' })}
+                  onClick={handleSwitchWallet}
                 >
                   Switch Wallet
                 </Button>

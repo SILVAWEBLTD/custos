@@ -2,15 +2,142 @@
 
 import React, { ReactNode, useEffect, useState } from 'react';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider, useAccount, useAccountEffect, useChainId } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { config, projectId } from './config';
+import { walletToast } from '@/lib/toast-factory';
+import { toast } from 'sonner';
 
 // Create queryClient
 const queryClient = new QueryClient();
 
 // Track if Web3Modal has been created
 let modalCreated = false;
+
+// Chain name mapping
+const CHAIN_NAMES: Record<number, string> = {
+  1: 'Ethereum Mainnet',
+  11155111: 'Sepolia Testnet',
+};
+
+// Internal component to handle wallet connection events
+function WalletConnectionListener() {
+  const { isConnected, isConnecting, connector } = useAccount();
+  const chainId = useChainId();
+  const [previousChainId, setPreviousChainId] = useState<number | undefined>();
+  const [wasConnected, setWasConnected] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [lastConnectorName, setLastConnectorName] = useState<
+    string | undefined
+  >();
+  const [isModalInViewport, setIsModalInViewport] = useState(false);
+
+  // Track previous connection state
+  useEffect(() => {
+    setWasConnected(isConnected);
+  }, [isConnected]);
+
+  // Set hasInteracted to true after a short delay (means initial load is done)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasInteracted(true);
+    }, 1000); // Wait 1 second after mount before considering interactions
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Detect Web3Modal in viewport (only after user has interacted)
+  useEffect(() => {
+    if (!hasInteracted) return;
+
+    const checkModalInViewport = () => {
+      // Check for Web3Modal elements that are actually visible
+      const modalSelectors = ['[data-w3m-modal]', 'w3m-modal'];
+
+      let modalExists = false;
+
+      for (const selector of modalSelectors) {
+        const element = document.querySelector(selector);
+        if (element) {
+          // Check if element is actually visible (not hidden)
+          const style = window.getComputedStyle(element);
+          const isVisible = style.opacity !== '0';
+
+          if (isVisible) {
+            modalExists = true;
+            break;
+          }
+        }
+      }
+
+      // Update state and log
+      setIsModalInViewport(modalExists);
+      console.log('Web3Modal in viewport:', modalExists);
+    };
+
+    // Check immediately
+    checkModalInViewport();
+
+    // Set up interval to check periodically
+    const interval = setInterval(checkModalInViewport, 500);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [hasInteracted]);
+
+  // Dismiss connecting toast when modal is closed
+  useEffect(() => {
+    if (hasInteracted && !isModalInViewport && !isConnected) {
+      toast.dismiss('wallet-connecting');
+    }
+  }, [isModalInViewport, isConnected, hasInteracted]);
+
+  // Handle connection state changes - only show connecting toast for user-initiated actions
+  useEffect(() => {
+    // Only show connecting toast if:
+    // 1. User has interacted (past initial load)
+    // 2. Currently connecting
+    // 3. Was not previously connected (to avoid showing on auto-reconnect)
+    if (hasInteracted && isConnecting && !wasConnected) {
+      walletToast.connecting(connector?.name);
+    }
+  }, [isConnecting, connector?.name, hasInteracted, wasConnected]);
+
+  // Handle account changes (connect/disconnect/switch)
+  useAccountEffect({
+    onConnect(data) {
+      if (data.address) {
+        const connectorName = data.connector?.name;
+        walletToast.connected(data.address, connectorName);
+        setLastConnectorName(connectorName);
+      }
+    },
+    onDisconnect() {
+      walletToast.disconnected(lastConnectorName);
+      setPreviousChainId(undefined);
+      setLastConnectorName(undefined);
+    },
+  });
+
+  // Handle chain switching
+  useEffect(() => {
+    if (
+      isConnected &&
+      chainId !== undefined &&
+      previousChainId !== undefined &&
+      chainId !== previousChainId
+    ) {
+      const chainName = CHAIN_NAMES[chainId] || `Chain ${chainId}`;
+      walletToast.chainSwitched(chainName);
+    }
+    if (isConnected && chainId !== undefined) {
+      setPreviousChainId(chainId);
+    }
+  }, [chainId, isConnected, previousChainId]);
+
+  return null;
+}
 
 export function Web3ModalProvider({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -31,17 +158,11 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
           'f2436c67184f158d1beda5df53298ee84abfc367581e4505134b5bcf5f46697d', // Binance
           'c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a', // Uniswap Wallet
         ],
-        // Exclude WalletConnect from appearing in the list
-        excludeWalletIds: [
-          '2a3c89040ac3b723a1972a33a125b1db11e258a6975d3a61252cd64e6ea5ea01', // WalletConnect (old)
-          'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa', // WalletConnect (new)
-          '38f5d18bd8522c244bdd70cb4a68e0e718865155811c043f052fb9f1c51de662', // WalletConnect v2
-        ],
         // Hide help button and customize appearance
         enableOnramp: false,
         themeVariables: {
           '--w3m-font-family': '"Geist", "Geist Fallback"',
-          '--w3m-accent': '#6C47FF',
+          '--w3m-accent': '#FFF',
           '--w3m-border-radius-master': '1px',
         },
       });
@@ -53,6 +174,7 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
+        <WalletConnectionListener />
         {mounted ? children : null}
       </QueryClientProvider>
     </WagmiProvider>
