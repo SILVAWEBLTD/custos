@@ -15,14 +15,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getWalletConnectProjectId = (): string => {
-  const projectId = process.env.WALLETCONNECT_PROJECT_ID;
-
-  // If projectId is not defined, throw an error
-  if (typeof window !== 'undefined' && !projectId) {
-    throw new Error('Project ID is not defined');
-  }
-
-  return projectId || process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
+  return (
+    process.env.WALLETCONNECT_PROJECT_ID ||
+    process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
+    ''
+  );
 };
 
 export const createWeb3ModalConnectors = (metadata: TMetadata) => {
