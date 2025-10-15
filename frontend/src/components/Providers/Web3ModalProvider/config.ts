@@ -3,14 +3,10 @@ import { mainnet, sepolia } from 'wagmi/chains';
 import { coinbaseWallet, walletConnect, injected } from 'wagmi/connectors';
 import { cookieStorage, createStorage } from 'wagmi';
 
-export const projectId: string | undefined =
+export const projectId: string =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
-  process.env.WALLETCONNECT_PROJECT_ID;
-
-console.log(
-  'WalletConnect Project ID:',
-  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
-);
+  process.env.WALLETCONNECT_PROJECT_ID ||
+  '';
 
 console.log(
   'WalletConnect Project without public ID:',
