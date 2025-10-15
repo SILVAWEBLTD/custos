@@ -23,13 +23,9 @@ export const getWalletConnectProjectId = (): string => {
 };
 
 export const createWeb3ModalConnectors = (metadata: TMetadata) => {
-  const projectId = getWalletConnectProjectId();
-  if (!projectId) {
-    throw new Error('WalletConnect Project ID is not defined');
-  }
   return [
     walletConnect({
-      projectId,
+      projectId: getWalletConnectProjectId(),
       metadata,
       showQrModal: false,
     }),
