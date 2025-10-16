@@ -20,13 +20,7 @@ const getConnectors = () => {
 
   return [
     walletConnect({
-      projectId:
-        process.env.WALLET_CONNECT_PROJECT_ID ??
-        (() => {
-          throw new Error(
-            'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not defined'
-          );
-        })(),
+      projectId: process.env.WALLET_CONNECT_PROJECT_ID || '',
       metadata,
       showQrModal: true,
     }),
