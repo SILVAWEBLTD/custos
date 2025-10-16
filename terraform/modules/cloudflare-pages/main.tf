@@ -7,10 +7,36 @@ terraform {
   }
 }
 
-resource "cloudflare_pages_project" "nextjs_app" {
+resource "cloudflare_pages_project" "nextjs_app_production" {
   account_id        = var.account_id
   name              = var.project_name
   production_branch = var.production_branch
+
+  build_config {
+    build_command   = var.build_config.build_command
+    destination_dir = var.build_config.destination_dir
+    root_dir        = var.build_config.root_dir
+  }
+
+  deployment_configs {
+    production {
+      environment_variables = var.environment_vars
+      compatibility_date    = "2024-01-01"
+      compatibility_flags   = ["nodejs_compat"]
+    }
+
+    preview {
+      environment_variables = var.environment_vars
+      compatibility_date    = "2024-01-01"
+      compatibility_flags   = ["nodejs_compat"]
+    }
+  }
+}
+
+resource "cloudflare_pages_project" "nextjs_app_staging" {
+  account_id        = var.account_id
+  name              = var.project_name_staging
+  production_branch = var.production_branch_staging
 
   build_config {
     build_command   = var.build_config.build_command

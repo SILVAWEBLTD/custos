@@ -13,6 +13,11 @@ variable "pages_domain" {
   type        = string
 }
 
+variable "pages_domain_staging" {
+  description = "Cloudflare Pages staging domain to point to"
+  type        = string
+}
+
 variable "api_subdomain" {
   description = "Subdomain for the API"
   type        = string

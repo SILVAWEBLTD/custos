@@ -3,6 +3,11 @@ output "pages_url" {
   value       = module.cloudflare_pages.pages_url
 }
 
+output "pages_url_staging" {
+  description = "Cloudflare Pages Staging URL"
+  value       = "https://${var.project_name_staging}.pages.dev"
+}
+
 output "custom_domain" {
   description = "Custom domain URL"
   value       = "https://${var.domain}"
@@ -26,4 +31,9 @@ output "database_name" {
 output "worker_name" {
   description = "API Worker Name"
   value       = module.cloudflare_workers.worker_name
+}
+
+output "project_name_staging" {
+  description = "Cloudflare Pages Staging Project Name"
+  value       = module.cloudflare_pages.project_name_staging
 }
