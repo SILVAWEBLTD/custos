@@ -1,10 +1,8 @@
-'use client';
-
 import React, { ReactNode, useEffect, useState } from 'react';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { WagmiProvider, useAccount, useAccountEffect, useChainId } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { config } from './config';
+import { config, WALLET_CONNECT_PROJECT_ID } from './config';
 import { walletToast } from '@/lib/toast-factory';
 import { toast } from 'sonner';
 
@@ -19,8 +17,6 @@ const CHAIN_NAMES: Record<number, string> = {
   1: 'Ethereum Mainnet',
   11155111: 'Sepolia Testnet',
 };
-
-console.log('ID', process.env.WALLET_CONNECT_PROJECT_ID);
 
 // Internal component to handle wallet connection events
 function WalletConnectionListener() {
@@ -148,7 +144,7 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
     if (!modalCreated) {
       createWeb3Modal({
         wagmiConfig: config,
-        projectId: '1f7ec19a11311c8e148ab385a70b35ce',
+        projectId: WALLET_CONNECT_PROJECT_ID,
         enableAnalytics: true,
         themeMode: 'dark',
         featuredWalletIds: [
