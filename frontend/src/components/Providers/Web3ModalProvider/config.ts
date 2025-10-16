@@ -20,7 +20,7 @@ const getConnectors = () => {
 
   return [
     walletConnect({
-      projectId: '1f7ec19a11311c8e148ab385a70b35ce',
+      projectId: process.env.WALLETCONNECT_PROJECT_ID,
       metadata,
       showQrModal: false,
     }),
