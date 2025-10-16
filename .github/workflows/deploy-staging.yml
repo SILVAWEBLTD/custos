@@ -28,8 +28,7 @@ jobs:
         run: bun i -D @opennextjs/cloudflare wrangler
 
       - name: Build (OpenNext)
-        run: bunx opennextjs-cloudflare build
-
+        run: NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID }} bunx opennextjs-cloudflare build
       - name: Deploy to Cloudflare Workers (staging)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
