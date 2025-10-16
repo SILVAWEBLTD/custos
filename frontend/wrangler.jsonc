@@ -3,7 +3,10 @@
   "main": ".open-next/worker.js",
   "name": "cloudflare-fullstack-frontend",
   "compatibility_date": "2025-10-11",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_compat_populate_process_env"
+  ],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
