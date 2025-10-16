@@ -21,12 +21,14 @@ const getConnectors = () => {
   return [
     walletConnect({
       projectId:
-        process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ??
+        process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
         (() => {
-          throw new Error('NEXT_PUBLICWALLETCONNECT_PROJECT_ID is not defined');
+          throw new Error(
+            'NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not defined'
+          );
         })(),
       metadata,
-      showQrModal: false,
+      showQrModal: true,
     }),
     injected({ shimDisconnect: true }),
     coinbaseWallet({
