@@ -62,11 +62,11 @@ jobs:
             echo "- Branch: ${GITHUB_REF_NAME}"
             echo "- Commit: ${GITHUB_SHA}"
             echo "- Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-            echo "- Worker: cloudflare-fullstack-frontend-staging"
+            echo "- Worker: custos-frontend-staging"
             echo ""
             echo "### 🔗 Preview URLs"
-            echo "- <a href=\"https://cloudflare-fullstack-frontend-staging.maxsilvauk.workers.dev\" target=\"_blank\" rel=\"noopener noreferrer\">Open Staging</a>"
+            echo "- <a href=\"https://custos-frontend-staging.maxsilvauk.workers.dev\" target=\"_blank\" rel=\"noopener noreferrer\">Open Staging</a>"
             if [ "${{ github.event_name }}" = "pull_request" ] && [ -n "$ALIAS" ]; then
-              echo "- <a href=\"https://${ALIAS}-cloudflare-fullstack-frontend.maxsilvauk.workers.dev\" target=\"_blank\" rel=\"noopener noreferrer\">Preview ${ALIAS} PR branch</a>"
+              echo "- <a href=\"https://${ALIAS}-custos-frontend-staging.maxsilvauk.workers.dev\" target=\"_blank\" rel=\"noopener noreferrer\">Preview ${ALIAS} PR branch</a>"
             fi
           } >> "${GITHUB_STEP_SUMMARY}"
