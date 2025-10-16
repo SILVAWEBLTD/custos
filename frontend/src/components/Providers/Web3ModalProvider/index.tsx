@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode, useEffect, useState } from 'react';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { WagmiProvider, useAccount, useAccountEffect, useChainId } from 'wagmi';
