@@ -6,7 +6,7 @@
 - **cloudflare D1**: SQLite's database for pages and workers to query
 
 ```
-cloudflare-fullstack/
+custos/
 ├── README.md
 ├── database/
 │   └── init.sql
