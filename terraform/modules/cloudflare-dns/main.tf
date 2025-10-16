@@ -27,6 +27,16 @@ resource "cloudflare_record" "www" {
   allow_overwrite = true
 }
 
+resource "cloudflare_record" "staging" {
+  zone_id         = var.zone_id
+  name            = "staging"
+  content         = var.pages_domain_staging
+  type            = "CNAME"
+  proxied         = true
+  comment         = "Managed by Terraform - Points to Cloudflare Pages Staging"
+  allow_overwrite = true
+}
+
 resource "cloudflare_record" "api" {
   zone_id         = var.zone_id
   name            = var.api_subdomain

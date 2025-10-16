@@ -17,6 +17,13 @@ variable "cloudflare_zone_id" {
 variable "project_name" {
   description = "Name of the Cloudflare Pages project"
   type        = string
+  default     = "custos-frontend-production"
+}
+
+variable "project_name_staging" {
+  description = "Name of the Cloudflare Pages staging project"
+  type        = string
+  default     = "custos-frontend-staging"
 }
 
 variable "domain" {
@@ -36,9 +43,16 @@ variable "production_branch" {
   default     = "production"
 }
 
+variable "production_branch_staging" {
+  description = "Git branch for staging deployments"
+  type        = string
+  default     = "staging"
+}
+
 variable "github_repo" {
   description = "GitHub repository (owner/repo)"
   type        = string
+  default     = "maxsilvaweb/custos"
 }
 
 variable "build_config" {
@@ -65,7 +79,7 @@ variable "frontend_environment_vars" {
 variable "api_worker_name" {
   description = "Name of the API Worker"
   type        = string
-  default     = "api-worker"
+  default     = "custos_api"
 }
 
 variable "api_worker_script_path" {
@@ -84,7 +98,7 @@ variable "api_environment_vars" {
 variable "db_name" {
   description = "Name of the D1 database"
   type        = string
-  default     = "cloudflare_db"
+  default     = "custos_db"
 }
 
 variable "db_init_sql" {
