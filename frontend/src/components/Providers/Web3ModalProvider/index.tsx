@@ -144,9 +144,10 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Create Web3Modal only once on client mount
     if (!modalCreated) {
+      console.log('WALLET_CONNECT_PROJECT_ID:', WALLET_CONNECT_PROJECT_ID);
       createWeb3Modal({
         wagmiConfig: config,
-        projectId: '1f7ec19a11311c8e148ab385a70b35ce',
+        projectId: WALLET_CONNECT_PROJECT_ID,
         enableAnalytics: true,
         themeMode: 'dark',
         featuredWalletIds: [
