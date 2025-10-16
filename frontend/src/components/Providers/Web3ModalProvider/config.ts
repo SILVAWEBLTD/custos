@@ -1,3 +1,5 @@
+'use client';
+
 import { http, createConfig } from 'wagmi';
 import { mainnet, sepolia } from 'wagmi/chains';
 import { coinbaseWallet, walletConnect, injected } from 'wagmi/connectors';
@@ -20,7 +22,10 @@ const getConnectors = () => {
 
   return [
     walletConnect({
-      projectId: process.env.WALLET_CONNECT_PROJECT_ID || '',
+      projectId:
+        process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ||
+        process.env.WALLET_CONNECT_PROJECT_ID ||
+        '',
       metadata,
       showQrModal: true,
     }),

@@ -20,6 +20,8 @@ const CHAIN_NAMES: Record<number, string> = {
   11155111: 'Sepolia Testnet',
 };
 
+console.log('ID', process.env.WALLET_CONNECT_PROJECT_ID);
+
 // Internal component to handle wallet connection events
 function WalletConnectionListener() {
   const { isConnected, isConnecting, connector } = useAccount();
@@ -146,7 +148,10 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
     if (!modalCreated) {
       createWeb3Modal({
         wagmiConfig: config,
-        projectId: '1f7ec19a11311c8e148ab385a70b35ce',
+        projectId:
+          process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ||
+          process.env.WALLET_CONNECT_PROJECT_ID ||
+          '',
         enableAnalytics: true,
         themeMode: 'dark',
         featuredWalletIds: [
