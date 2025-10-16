@@ -17,6 +17,11 @@ const chains = [mainnet, sepolia] as const;
 export const WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '';
 
+console.log(
+  'process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID',
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
+);
+
 // Only create connectors on the client side
 const getConnectors = () => {
   if (typeof window === 'undefined') {
