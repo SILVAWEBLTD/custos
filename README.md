@@ -1,32 +1,58 @@
-# Cloudflare Full-Stack (Custos)
+# Project Structure:
 
-This monorepo provisions a Cloudflare-native stack consisting of a D1 database, a Workers-based REST API built with Hono, and a Next.js 15 frontend deployed via Cloudflare Pages. Terraform configures all infrastructure, DNS records, bindings, and environment variables so the system can be stood up repeatably.
-
-## Architecture
+- **cloudflare**: Secure serverless hosting
+- **cloudflare workers**: Running the Hono rest API
+- **cloudflare pages - NextJS Frontend**: NextJS15 frontend
+- **cloudflare D1**: SQLite's database for pages and workers to query
 
 ```
-┌──────────────────┐      ┌─────────────────────────┐      ┌──────────────────────┐
-│ Cloudflare Pages │◀────▶│  Next.js 15 Frontend    │      │  Wallet integrations │
-└──────┬───────────┘      └──────────┬──────────────┘      └──────────────────────┘
-       │ NEXT_PUBLIC_API_URL          │
-┌──────▼───────────┐      ┌───────────▼───────────┐
-│ Cloudflare Worker│◀────▶│  Hono REST API        │
-└──────┬───────────┘      └───────────┬───────────┘
-       │ D1 binding                    │
-┌──────▼───────────┐                   │
-│ Cloudflare D1    │◀──────────────────┘
-└──────────────────┘
+custos/
+├── README.md
+├── database/
+│   └── init.sql
+├── frontend/
+│   └── (Next.js application files)
+├── workers/
+│   └── api/
+│       ├── package.json
+│       ├── wrangler.toml
+│       ├── src/
+│       │   └── index.js
+│       └── dist/
+│           └── (compiled worker files)
+└── terraform/
+    ├── main.tf
+    ├── variables.tf
+    ├── outputs.tf
+    ├── terraform.tfvars
+    └── modules/
+        ├── cloudflare-pages/
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        ├── cloudflare-workers/
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        ├── cloudflare-d1/
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        └── cloudflare-dns/
+            ├── main.tf
+            ├── variables.tf
+            └── outputs.tf
 ```
 
 ## Repository layout
 
-| Path | Purpose |
-| ---- | ------- |
-| `terraform/` | Root Terraform configuration plus modules for D1, Workers, Pages, and DNS. |
-| `frontend/` | Next.js application bundled with `@opennextjs/cloudflare` for Pages. |
+| Path           | Purpose                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------- |
+| `terraform/`   | Root Terraform configuration plus modules for D1, Workers, Pages, and DNS.                  |
+| `frontend/`    | Next.js application bundled with `@opennextjs/cloudflare` for Pages.                        |
 | `workers/api/` | Hono API worker targeting D1 and exposing `/api/users`, `/api/posts`, and health endpoints. |
-| `database/` | Cloudflare D1 assets and supporting SQL files. |
-| `steps.md` | Field notes and caveats gathered during manual setup—mirrored throughout this README. |
+| `database/`    | Cloudflare D1 assets and supporting SQL files.                                              |
+| `steps.md`     | Field notes and caveats gathered during manual setup—mirrored throughout this README.       |
 
 ## Prerequisites
 
@@ -39,24 +65,30 @@ This monorepo provisions a Cloudflare-native stack consisting of a D1 database, 
 ## Provisioning workflow
 
 1. **Delegate DNS to Cloudflare**
+
    - Add your domain to Cloudflare, update registrar nameservers, and wait until the zone status is **Active**.
    - Record the zone ID (`cloudflare_zone_id`) and account ID (`cloudflare_account_id`).
 
 2. **Create a scoped API token**
+
    - Minimum scopes: Zone:Read, Zone:DNS:Edit, Account:Workers Scripts:Edit, Account:D1 Databases:Edit (or Write), Account:Cloudflare Pages:Edit, Account Settings:Read.
    - Export it for Terraform (`export TF_VAR_cloudflare_api_token="<token>"`) or populate `terraform/terraform.tfvars` (avoid committing secrets).
 
 3. **Wire Cloudflare Pages to GitHub**
+
    - Install the Cloudflare Pages GitHub App and grant access to the repository referenced by `github_repo`.
    - Ensure the `production_branch` (default `production`) builds locally with the configured command (`build_config.build_command`).
 
 4. **Local preparation**
+
    - **API worker**
+
      ```bash
      cd workers/api
      bun install
      bun run build:bundle   # produces dist/worker.js for validation
      ```
+
      The Terraform module expects `api_worker_script_path` to point at the compiled module (default `./workers/api/src/index.js`). Adjust the variable if you relocate the bundle.
 
    - **Frontend**
@@ -65,9 +97,10 @@ This monorepo provisions a Cloudflare-native stack consisting of a D1 database, 
      bun install
      bun run build
      ```
-     Development uses Turbopack (`next dev --turbopack`), but keep the production build command as plain `next build`—do not enable Turbopack for the build script per the caveat in `steps.md`.
+     Development uses Turbopack (`next dev --turbopack`), but keep the production build command as plain `next build`—do not enable Turbopack for the build script OpenNext deployments on cloudflare break with the turbopack flag enabled.
 
 5. **Configure Terraform variables**
+
    - Edit `terraform/terraform.tfvars` and set:
      ```hcl
      cloudflare_account_id = "..."
@@ -80,16 +113,19 @@ This monorepo provisions a Cloudflare-native stack consisting of a D1 database, 
      production_branch_staging = "staging"
      api_subdomain         = "api"
      ```
-   - Add optional maps for `frontend_environment_vars` and `api_environment_vars` (keep secrets out of version control by using Terraform variables or environment exports).
+   - Add optional maps for `frontend_environment_vars` and `api_environment_vars`.
 
 6. **Apply Terraform**
+
    ```bash
    cd terraform
    terraform init
    terraform plan
    terraform apply
    ```
+
    The apply will:
+
    - Create the D1 database and attach it to the Worker.
    - Upload the API Worker, bind the D1 database, and register routes at `https://<api_subdomain>.<domain>/*`.
    - Create production and staging Cloudflare Pages projects, configure environment variables (including `NEXT_PUBLIC_API_URL`), and connect builds to GitHub.
@@ -113,12 +149,12 @@ This monorepo provisions a Cloudflare-native stack consisting of a D1 database, 
 
 ### Worker variables
 
-- `CORS_ORIGIN` (comma-separated list). Production defaults to `https://silvaweb.org`, development to `*`; update via Terraform’s `api_environment_vars` for multiple origins.
+- `CORS_ORIGIN` (comma-separated list). Production defaults to `https://silvaweb.org`, development to `*`; update via Terraform's `api_environment_vars` for multiple origins.
 
 ### Frontend variables
 
 - `NEXT_PUBLIC_API_URL` is injected automatically by Terraform.
-- Wallet connectivity expects `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` (and the legacy spelling `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID` referenced in `frontend/src/components/Providers/Web3ModalProvider`). Ensure at least one of these variables is defined in the Pages environment.
+- Wallet connectivity expects `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID` referenced in `frontend/src/components/Providers/Web3ModalProvider`.
 
 ## Local development
 
@@ -127,7 +163,7 @@ This monorepo provisions a Cloudflare-native stack consisting of a D1 database, 
 ```bash
 cd workers/api
 bun install
-bun run dev            # Wrangler dev on http://127.0.0.1:8771
+bun run dev
 ```
 
 ### Frontend
@@ -135,7 +171,7 @@ bun run dev            # Wrangler dev on http://127.0.0.1:8771
 ```bash
 cd frontend
 bun install
-bun run dev          # http://localhost:3000
+bun run dev
 ```
 
 When running locally, set `NEXT_PUBLIC_API_URL` (for example via `.env.local`) so the app points to the dev worker or production endpoint.
@@ -161,25 +197,14 @@ When running locally, set `NEXT_PUBLIC_API_URL` (for example via `.env.local`) s
 
 ## Troubleshooting
 
-- **DNS propagation**: If `curl https://api.<domain>` fails with `NXDOMAIN`, reapply just the DNS module and query authoritative nameservers:
-  ```bash
-  terraform apply -target=module.cloudflare_dns
-  dig @jean.ns.cloudflare.com api.silvaweb.org A
-  dig api.silvaweb.org A @1.0.0.1
-  sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
-  ```
-  As a temporary workaround, pin the resolve target: `curl -i --resolve api.silvaweb.org:443:104.21.49.95 https://api.silvaweb.org/api/health`.
-
 - **Frontend routing**: Confirm `wrangler.jsonc` lists the production routes:
+
   ```json
   {
     "env": {
       "production": {
         "name": "cloudflare-fullstack-frontend",
-        "routes": [
-          "silvaweb.org/*",
-          "www.silvaweb.org/*"
-        ]
+        "routes": ["silvaweb.org/*", "www.silvaweb.org/*"]
       }
     }
   }

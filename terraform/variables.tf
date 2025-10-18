@@ -52,7 +52,7 @@ variable "production_branch_staging" {
 variable "github_repo" {
   description = "GitHub repository (owner/repo)"
   type        = string
-  default     = "maxsilvaweb/custos"
+  default     = "silvaweb/custos"
 }
 
 variable "build_config" {
