@@ -6,7 +6,7 @@ on:
 
 jobs:
   enforce-source-branch:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Allow only staging -> production
         run: |
