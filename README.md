@@ -107,7 +107,7 @@ custos/
      ```hcl
      cloudflare_account_id = "..."
      cloudflare_zone_id    = "..."
-     domain                = "silvaweb.org"
+     domain                = "custos.space"
      project_name          = "custos-frontend-production"
      project_name_staging  = "custos-frontend-staging"
      github_repo           = "owner/repo"
@@ -151,7 +151,7 @@ custos/
 
 ### Worker variables
 
-- `CORS_ORIGIN` (comma-separated list). Production defaults to `https://silvaweb.org`, development to `*`; update via Terraform's `api_environment_vars` for multiple origins.
+- `CORS_ORIGIN` (comma-separated list). Production defaults to `https://custos.space`, development to `*`; update via Terraform's `api_environment_vars` for multiple origins.
 
 ### Frontend variables
 
@@ -206,7 +206,7 @@ When running locally, set `NEXT_PUBLIC_API_URL` (for example via `.env.local`) s
     "env": {
       "production": {
         "name": "cloudflare-fullstack-frontend",
-        "routes": ["silvaweb.org/*", "www.silvaweb.org/*"]
+        "routes": ["custos.space/*", "www.custos.space/*"]
       }
     }
   }
@@ -228,8 +228,8 @@ bunx wrangler deploy -c workers/api/wrangler.jsonc -e production
 bunx wrangler tail -c workers/api/wrangler.jsonc -e production --format pretty
 
 # Health checks
-curl -I https://silvaweb.org
-curl -i https://api.silvaweb.org/api/health
+curl -I https://custos.space
+curl -i https://api.custos.space/api/health
 ```
 
 Keep `steps.md` updated alongside infrastructure changes so this README remains accurate.
