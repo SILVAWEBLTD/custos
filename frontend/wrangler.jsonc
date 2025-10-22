@@ -11,11 +11,11 @@
   "env": {
     "production": {
       "name": "custos-frontend-production",
-      "routes": ["silvaweb.org/*", "www.silvaweb.org/*"]
+      "routes": ["custos.space/*", "www.custos.space/*"]
     },
     "staging": {
       "name": "custos-frontend-staging",
-      "routes": ["staging.silvaweb.org/*", "www.staging.silvaweb.org/*"],
+      "routes": ["staging.custos.space/*", "www.staging.custos.space/*"],
       "preview_urls": true
     }
   }

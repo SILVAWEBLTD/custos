@@ -48,5 +48,5 @@ jobs:
             echo "- Worker: custos-frontend"
             echo ""
             echo "### 🔗 Links"
-            echo "- <a href=\"https://silvaweb.org\" target=\"_blank\" rel=\"noopener noreferrer\">https://silvaweb.org</a>"
+            echo "- <a href=\"https://custos.space\" target=\"_blank\" rel=\"noopener noreferrer\">https://custos.space</a>"
           } >> "${GITHUB_STEP_SUMMARY}"

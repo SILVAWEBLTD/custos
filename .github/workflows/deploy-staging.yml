@@ -65,8 +65,8 @@ jobs:
             echo "- Worker: custos-frontend-staging"
             echo ""
             echo "### 🔗 Preview URLs"
-            echo "- <a href=\"https://staging.silvaweb.org\" target=\"_blank\" rel=\"noopener noreferrer\">https://staging.silvaweb.org</a>"
+            echo "- <a href=\"https://staging.custos.space\" target=\"_blank\" rel=\"noopener noreferrer\">https://staging.custos.space</a>"
             if [ "${{ github.event_name }}" = "pull_request" ] && [ -n "$ALIAS" ]; then
-              echo "- <a href=\"https://${ALIAS}-staging.silvaweb.org\" target=\"_blank\" rel=\"noopener noreferrer\">Preview ${ALIAS} PR branch</a>"
+              echo "- <a href=\"https://${ALIAS}-staging.custos.space\" target=\"_blank\" rel=\"noopener noreferrer\">Preview ${ALIAS} PR branch</a>"
             fi
           } >> "${GITHUB_STEP_SUMMARY}"
