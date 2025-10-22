@@ -43,13 +43,13 @@ module "cloudflare_workers" {
 module "cloudflare_pages" {
   source = "./modules/cloudflare-pages"
 
-  account_id        = var.cloudflare_account_id
-  project_name      = var.project_name
-  project_name_staging = var.project_name_staging
-  production_branch = var.production_branch
+  account_id                = var.cloudflare_account_id
+  project_name              = var.project_name
+  project_name_staging      = var.project_name_staging
+  production_branch         = var.production_branch
   production_branch_staging = var.production_branch_staging
-  github_repo       = var.github_repo
-  build_config      = var.build_config
+  github_repo               = var.github_repo
+  build_config              = var.build_config
   environment_vars = merge(
     var.frontend_environment_vars,
     {
@@ -62,12 +62,21 @@ module "cloudflare_pages" {
 module "cloudflare_dns" {
   source = "./modules/cloudflare-dns"
 
-  zone_id       = var.cloudflare_zone_id
-  domain        = var.domain
-  pages_domain  = module.cloudflare_pages.pages_domain
+  zone_id              = var.cloudflare_zone_id
+  domain               = var.domain
+  pages_domain         = module.cloudflare_pages.pages_domain
   pages_domain_staging = module.cloudflare_pages.project_name_staging
-  api_subdomain = var.api_subdomain
-  worker_route  = module.cloudflare_workers.worker_route
+  api_subdomain        = var.api_subdomain
+  worker_route         = module.cloudflare_workers.worker_route
 
   depends_on = [module.cloudflare_pages, module.cloudflare_workers]
+}
+
+resource "cloudflare_zone_settings_override" "zone_security" {
+  zone_id = var.cloudflare_zone_id
+
+  settings {
+    security_level = "under_attack"
+    bot_fight_mode = "on"
+  }
 }

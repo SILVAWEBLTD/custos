@@ -7,9 +7,8 @@
 .terraform.lock.hcl
 crash.log
 crash.*.log
-*.terraformPlan
-*.tfplan
-*.tfplan.*
+terraform/terraformPlan
+terraform/tfPlan
 
 # Cloudflare Workers
 workers/*/dist/
@@ -101,7 +100,7 @@ jspm_packages/
 # Next.js build output
 .next
 
-# Nuxt.js build / generate output
+# Nuxt.js build/generate output
 .nuxt
 dist
 
