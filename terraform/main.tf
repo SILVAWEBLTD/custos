@@ -77,6 +77,10 @@ resource "cloudflare_zone_settings_override" "zone_security" {
 
   settings {
     security_level = "under_attack"
-    bot_fight_mode = "on"
   }
+}
+
+resource "cloudflare_bot_management" "bot_management_settings" {
+  zone_id   = var.cloudflare_zone_id
+  fight_mode = true
 }
