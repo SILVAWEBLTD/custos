@@ -82,5 +82,6 @@ resource "cloudflare_zone_settings_override" "zone_security" {
 
 resource "cloudflare_bot_management" "bot_management_settings" {
   zone_id   = var.cloudflare_zone_id
+  enable_js = true
   fight_mode = true
 }

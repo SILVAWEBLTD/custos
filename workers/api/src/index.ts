@@ -16,7 +16,7 @@ app.use(
         .split(',')
         .map((s: string) => s.trim())
         .filter(Boolean);
-      const fallback = 'https://silvaweb.org';
+      const fallback = 'https://custos.space';
       if (list.length === 0) return fallback;
       return list.includes(origin) ? origin : '';
     },
@@ -33,7 +33,7 @@ app.route('/api/posts', posts);
 app.route('/api/healthcheck', healthcheck);
 app.route('/api/health', healthcheck);
 
-// Error handler middleware 
+// Error handler middleware
 app.onError((err, c) => {
   console.error('Worker error:', err);
   return c.json({ error: 'Internal Server Error' }, 500);

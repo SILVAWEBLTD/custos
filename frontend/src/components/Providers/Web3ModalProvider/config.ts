@@ -8,7 +8,7 @@ import { cookieStorage, createStorage } from 'wagmi';
 const metadata = {
   name: 'Custos',
   description: 'DeFi platform',
-  url: 'https://silvaweb.org',
+  url: 'https://custos.space',
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 

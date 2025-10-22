@@ -15,7 +15,7 @@
   "env": {
     "production": {
       "vars": {
-        "CORS_ORIGIN": "https://silvaweb.org"
+        "CORS_ORIGIN": "https://custos.space"
       }
     },
     "development": {

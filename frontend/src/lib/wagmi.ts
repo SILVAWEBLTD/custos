@@ -22,8 +22,8 @@ export const config = createConfig({
       metadata: {
         name: 'Custos',
         description: 'Web3 DApp',
-        url: 'https://silvaweb.org',
-        icons: ['https://silvaweb.org/favicon.ico'],
+        url: 'https://custos.space',
+        icons: ['https://custos.space/favicon.ico'],
       },
       showQrModal: true,
     }),
