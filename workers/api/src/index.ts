@@ -7,7 +7,7 @@ import type { Bindings } from './types';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// CORS middlewar
+// CORS middleware
 app.use(
   '*',
   cors({
