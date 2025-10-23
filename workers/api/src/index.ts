@@ -28,10 +28,10 @@ app.use(
 );
 
 // App routes
-app.route('/api/users', users);
-app.route('/api/posts', posts);
-app.route('/api/healthcheck', healthcheck);
-app.route('/api/health', healthcheck);
+app.route('/users', users);
+app.route('/posts', posts);
+app.route('/healthcheck', healthcheck);
+app.route('/health', healthcheck);
 
 // Error handler middleware
 app.onError((err, c) => {
