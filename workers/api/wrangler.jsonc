@@ -1,6 +1,6 @@
 {
   "name": "custos_api",
-  "main": "src/index.ts",
+  "main": "dist/worker.js",
   "compatibility_date": "2024-01-01",
   "compatibility_flags": ["nodejs_compat"],
 
@@ -32,6 +32,7 @@
   },
 
   "build": {
-    "command": "echo '🚀 Deploying API Worker... 🚀'"
+    "command": "echo '🚀 Deploying API Worker... 🚀'",
+    "command": "bun run build:bundle"
   }
 }
