@@ -1,0 +1,37 @@
+name: Deploy API to Production
+
+on:
+  push:
+    branches:
+      - production
+    paths:
+      - 'workers/api/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+        working-directory: workers/api
+
+      - name: Deploy Worker
+        run: bunx wrangler deploy --minify --env=production
+        working-directory: workers/api
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Post-deploy summary
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "Healthcheck: https://api.custos.space/healthcheck"
+          echo "Users endpoint: https://api.custos.space/users"
