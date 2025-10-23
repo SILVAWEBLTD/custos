@@ -18,51 +18,11 @@ const KeysetQuerySchema = z.object({
 
 export const users = new Hono<{ Bindings: Bindings }>();
 
-users.get('/', zValidator('query', KeysetQuerySchema), async (c) => {
-  const { limit, after_id } = c.req.valid('query');
-
-  const stmt = after_id
-    ? 'SELECT id, name, email, created_at AS createdAt FROM users WHERE id > ? ORDER BY id LIMIT ?'
-    : 'SELECT id, name, email, created_at AS createdAt FROM users ORDER BY id LIMIT ?';
-
-  const bindArgs = after_id ? [after_id, limit] : [limit];
-
-  const { results } = await c.env.DB.prepare(stmt)
-    .bind(...bindArgs)
-    .all();
-
-  const items = results.map((r: any) =>
-    UserSchema.parse({
-      id: Number(r.id),
-      name: String(r.name),
-      email: String(r.email),
-      createdAt: String(r.createdAt),
-    })
-  );
-
-  const nextCursor = items.length ? items[items.length - 1].id : undefined;
-  if (nextCursor) c.header('X-Next-Cursor', String(nextCursor));
-
-  return c.json(items);
+users.get('/', (c) => {
+  return c.text('Hello from Users!');
 });
 
-users.get('/:id', zValidator('param', IdParamSchema), async (c) => {
-  const { id } = c.req.valid('param');
-
-  const row = await c.env.DB.prepare(
-    'SELECT id, name, email, created_at AS createdAt FROM users WHERE id = ?'
-  )
-    .bind(Number(id))
-    .first();
-
-  if (!row) return c.json({ error: 'User not found' }, 404);
-
-  const user = UserSchema.parse({
-    id: Number(row.id),
-    name: String(row.name),
-    email: String(row.email),
-    createdAt: String(row.createdAt),
-  });
-
-  return c.json(user);
+users.get('/:id', (c) => {
+  const { id } = c.req.param();
+  return c.text(`Hello from User ID: ${id}`);
 });

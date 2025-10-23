@@ -33,6 +33,12 @@ app.route('/api/posts', posts);
 app.route('/api/healthcheck', healthcheck);
 app.route('/api/health', healthcheck);
 
+// Catch-all route for debugging
+app.all('*', (c) => {
+  console.log(`Catch-all hit for path: ${c.req.path}`);
+  return c.text(`Catch-all hit for path: ${c.req.path}`, 404);
+});
+
 // Error handler middleware
 app.onError((err, c) => {
   console.error('Worker error:', err);
