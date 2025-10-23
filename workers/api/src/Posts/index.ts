@@ -2,25 +2,41 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import type { Bindings } from '../types';
-import { CreatePostSchema, PostSchema, IdParamSchema } from './validation';
+import {
+  CreatePostSchema,
+  PostSchema,
+  IdParamSchema,
+  ListPostsQuerySchema,
+} from './validation';
 
 export const posts = new Hono<{ Bindings: Bindings }>();
 
-posts.get('/', async (c) => {
+posts.get('/', zValidator('query', ListPostsQuerySchema), async (c) => {
+  const { limit, after_id } = c.req.valid('query');
+
   try {
-    const { results } = await c.env.DB.prepare(
-      'SELECT id, title, content, author_id AS authorId, created_at AS createdAt FROM posts ORDER BY id'
-    ).all();
+    const stmt = after_id
+      ? 'SELECT id, title, content, user_id AS userId, created_at AS createdAt FROM posts WHERE id > ? ORDER BY id LIMIT ?'
+      : 'SELECT id, title, content, user_id AS userId, created_at AS createdAt FROM posts ORDER BY id LIMIT ?';
+
+    const bindArgs = after_id ? [after_id, limit] : [limit];
+
+    const { results } = await c.env.DB.prepare(stmt)
+      .bind(...bindArgs)
+      .all();
 
     const items = results.map((r: any) =>
       PostSchema.parse({
         id: Number(r.id),
         title: String(r.title),
         content: String(r.content),
-        authorId: Number(r.authorId),
+        userId: Number(r.userId),
         createdAt: String(r.createdAt),
       })
     );
+
+    const nextCursor = items.length ? items[items.length - 1].id : undefined;
+    if (nextCursor) c.header('X-Next-Cursor', String(nextCursor));
 
     return c.json(items);
   } catch (error) {
@@ -34,7 +50,7 @@ posts.get('/:id', zValidator('param', IdParamSchema), async (c) => {
 
   try {
     const row = await c.env.DB.prepare(
-      'SELECT id, title, content, author_id AS authorId, created_at AS createdAt FROM posts WHERE id = ?'
+      'SELECT id, title, content, user_id AS authorId, created_at AS createdAt FROM posts WHERE id = ?'
     )
       .bind(Number(id))
       .first();
@@ -45,7 +61,7 @@ posts.get('/:id', zValidator('param', IdParamSchema), async (c) => {
       id: Number(row.id),
       title: String(row.title),
       content: String(row.content),
-      authorId: Number(row.authorId),
+      userId: Number(row.authorId),
       createdAt: String(row.createdAt),
     });
 
@@ -62,15 +78,15 @@ posts.post('/', zValidator('json', CreatePostSchema), async (c) => {
 
   try {
     const res = await c.env.DB.prepare(
-      'INSERT INTO posts (title, content, author_id, created_at) VALUES (?, ?, ?, ?)'
+      'INSERT INTO posts (title, content, user_id, created_at) VALUES (?, ?, ?, ?)'
     )
-      .bind(input.title, input.content, input.authorId, createdAt)
+      .bind(input.title, input.content, input.userId, createdAt)
       .run();
 
     const id = Number(res.meta.last_row_id);
 
     const row = await c.env.DB.prepare(
-      'SELECT id, title, content, author_id AS authorId, created_at AS createdAt FROM posts WHERE id = ?'
+      'SELECT id, title, content, user_id AS authorId, created_at AS createdAt FROM posts WHERE id = ?'
     )
       .bind(id)
       .first();
@@ -81,7 +97,7 @@ posts.post('/', zValidator('json', CreatePostSchema), async (c) => {
       id: Number(row.id),
       title: String(row.title),
       content: String(row.content),
-      authorId: Number(row.authorId),
+      userId: Number(row.authorId),
       createdAt: String(row.createdAt),
     });
 

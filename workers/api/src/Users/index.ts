@@ -13,20 +13,20 @@ const UserSchema = z.object({
 const IdParamSchema = z.object({ id: z.string().regex(/^\d+$/) });
 const KeysetQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
-  after_id: z.coerce.number().int().min(0).optional(),
+  cursor_id: z.coerce.number().int().min(0).optional(),
 });
 
 export const users = new Hono<{ Bindings: Bindings }>();
 
 users.get('/', zValidator('query', KeysetQuerySchema), async (c) => {
-  const { limit, after_id } = c.req.valid('query');
+  const { limit, cursor_id } = c.req.valid('query');
 
   try {
-    const stmt = after_id
+    const stmt = cursor_id
       ? 'SELECT id, name, email, created_at AS createdAt FROM users WHERE id > ? ORDER BY id LIMIT ?'
       : 'SELECT id, name, email, created_at AS createdAt FROM users ORDER BY id LIMIT ?';
 
-    const bindArgs = after_id ? [after_id, limit] : [limit];
+    const bindArgs = cursor_id ? [cursor_id, limit] : [limit];
 
     const { results } = await c.env.DB.prepare(stmt)
       .bind(...bindArgs)

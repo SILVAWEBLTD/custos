@@ -21,5 +21,5 @@ export const ListUsersQuerySchema = z.object({
 
 export const KeysetQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
-  after_id: z.coerce.number().int().min(0).optional(),
+  cursor_id: z.coerce.number().int().min(0).optional(),
 });

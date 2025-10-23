@@ -4,28 +4,34 @@
   "compatibility_date": "2024-01-01",
   "compatibility_flags": ["nodejs_compat"],
 
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "custos_db",
-      "database_id": "f19743bd-3f9e-4adf-a61a-8eb3bf7c35e9"
-    }
-  ],
-
   "env": {
     "production": {
       "vars": {
         "CORS_ORIGIN": "https://custos.space"
-      }
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "custos_db",
+          "database_id": "85bb16e0-63db-4c4d-8934-b193e0b78b15"
+        }
+      ]
     },
     "development": {
       "vars": {
         "CORS_ORIGIN": "*"
-      }
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "custos_db",
+          "database_id": "85bb16e0-63db-4c4d-8934-b193e0b78b15"
+        }
+      ]
     }
   },
 
   "build": {
-    "command": "echo 'No build step required'"
+    "command": "echo '🚀 Deploying API Worker... 🚀'"
   }
 }
