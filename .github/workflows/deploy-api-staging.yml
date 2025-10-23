@@ -1,0 +1,70 @@
+name: Deploy API Staging
+
+on:
+  push:
+    branches: [staging]
+    paths:
+      - 'workers/api/**'
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'workers/api/**'
+
+jobs:
+  deploy-api:
+    runs-on: blacksmith-32vcpu-ubuntu-2404
+    defaults:
+      run:
+        working-directory: workers/api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - name: Install deps (Bun)
+        run: bun install --frozen-lockfile
+
+      - name: Deploy to Cloudflare Workers (staging)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: bunx wrangler deploy -c wrangler.jsonc -e staging --keep-vars
+
+      - name: Create branch preview alias (PRs only)
+        if: github.event_name == 'pull_request'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          RAW="${{ github.head_ref }}"
+          ALIAS="$(echo "$RAW" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9-]#-#g' | sed 's#^-##; s#-$##')"
+          if [ -n "$ALIAS" ]; then
+            bunx wrangler versions upload -c wrangler.jsonc -e staging --preview-alias "$ALIAS"
+            echo "Created preview alias: $ALIAS"
+          else
+            echo "No valid branch alias generated; skipping preview alias."
+          fi
+
+      - name: Post-deploy summary
+        if: success()
+        run: |
+          RAW="${{ github.head_ref }}"
+          ALIAS="$(echo "$RAW" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9-]#-#g' | sed 's#^-##; s#-$##')"
+          {
+            echo "## ✅ Staging API Deployment Succeeded"
+            echo ""
+            echo "- Repo: ${GITHUB_REPOSITORY}"
+            echo "- Branch: ${GITHUB_REF_NAME}"
+            echo "- Commit: ${GITHUB_SHA}"
+            echo "- Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo "- Worker: custos-api-staging"
+            echo ""
+            if [ "${{ github.event_name }}" = "pull_request" ] && [ -n "$ALIAS" ]; then
+              echo "### 🔗 Preview URLs"
+              echo "- <a href=\"https://${ALIAS}-api-staging.custos.space\" target=\"_blank\" rel=\"noopener noreferrer\">Preview ${ALIAS} PR branch</a>"
+            fi
+          } >> "${GITHUB_STEP_SUMMARY}"
