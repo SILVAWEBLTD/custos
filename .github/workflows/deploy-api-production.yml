@@ -1,4 +1,4 @@
-name: Deploy API to Production
+name: Deploy API Worker
 
 on:
   push:
