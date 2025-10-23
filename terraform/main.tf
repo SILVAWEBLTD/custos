@@ -77,6 +77,7 @@ resource "cloudflare_zone_settings_override" "zone_security" {
 
   settings {
     security_level = "under_attack"
+    always_use_https = "on"
   }
 }
 
