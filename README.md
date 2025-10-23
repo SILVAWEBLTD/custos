@@ -56,6 +56,31 @@ custos/
 | `database/`    | Cloudflare D1 assets and supporting SQL files.                                              |
 | `steps.md`     | Field notes and caveats gathered during manual setup—mirrored throughout this README.       |
 
+## API Endpoints
+
+The API is built using Hono on Cloudflare Workers, providing various endpoints to interact with the D1 database.
+**Base URL:** `http://api.custos.space` (Note: Cloudflare typically redirects HTTP requests to HTTPS for security. Your API will most likely be accessed via `https://api.custos.space`).
+
+### Endpoints:
+
+- **Healthcheck:**
+
+  - `GET http://api.custos.space/health`
+  - Checks the health and responsiveness of the API.
+
+- **Users:**
+
+  - `GET http://api.custos.space/users`
+  - Retrieves a list of users. Supports keyset pagination.
+  - Query Parameters:
+    - `limit`: (Optional) Maximum number of users to return (default: 20, max: 100).
+    - `cursor_id`: (Optional) The ID of the last user from the previous page for pagination.
+  - Example (first 2 users): `http://api.custos.space/users?limit=2`
+  - Example (next 2 users after ID 2): `http://api.custos.space/users?limit=2&cursor_id=2`
+  - `GET http://api.custos.space/users/:id`
+  - Retrieves a single user by their ID.
+  - Example: `http://api.custos.space/users/1`
+
 ## Prerequisites
 
 - Active Cloudflare account with a domain delegate-able to Cloudflare DNS.
@@ -228,8 +253,12 @@ bunx wrangler deploy -c workers/api/wrangler.jsonc -e production
 bunx wrangler tail -c workers/api/wrangler.jsonc -e production --format pretty
 
 # Health checks
-curl -I https://custos.space
-curl -i https://api.custos.space/api/health
+curl -i https://custos.space
+
+# API calls (If under attack mode is set in cloudflare you cannot make CURL calls through terminal)
+curl -i https://api.custos.space/health"  | jq .
+curl "https://api.custos.space/users?limit=8&cursor_id=2" | jq .
+curl "https://api.custos.space/posts?limit=8&cursor_id=2" | jq .
 ```
 
 Keep `steps.md` updated alongside infrastructure changes so this README remains accurate.
