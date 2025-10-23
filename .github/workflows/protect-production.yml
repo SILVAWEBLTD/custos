@@ -1,4 +1,4 @@
-name: Protect Production Merge
+name: Protect Production Merge into Production
 
 on:
   pull_request:
