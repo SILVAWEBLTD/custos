@@ -6,6 +6,7 @@
 
   "env": {
     "production": {
+      "name": "custos_api",
       "vars": {
         "CORS_ORIGIN": "https://custos.space"
       },
@@ -32,7 +33,6 @@
   },
 
   "build": {
-    "command": "echo '🚀 Deploying API Worker... 🚀'",
     "command": "bun run build:bundle"
   }
 }
