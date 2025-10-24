@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { Web3ModalProvider } from '@/components/Providers/Web3ModalProvider';
-import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Custos',
-  description: 'DApp',
+  title: 'custos.space | DeFi platform',
+  description: 'Custos application',
 };
 
 export default function RootLayout({
@@ -29,8 +27,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Web3ModalProvider>{children}</Web3ModalProvider>
-        <Toaster />
+        {children}
       </body>
     </html>
   );
