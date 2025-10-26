@@ -7,13 +7,10 @@ import { locales, type Locale } from '@/i18n';
 
 type LocaleLayoutProps = {
   children: ReactNode;
-  params: Promise<{ locale: string }>;
+  params: string;
 };
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: LocaleLayoutProps) {
+export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale: rawLocale } = await params;
 
   if (!locales.includes(rawLocale as Locale)) {
