@@ -1,0 +1,56 @@
+{
+  "Home": {
+    "brand": "custos",
+    "flipWords": {
+      "space": ".空间",
+      "defi": "去中心化金融",
+      "dex": "去中心化交易所",
+      "ai": "AI 驱动"
+    },
+    "introHighlight": "Custos 即将上线",
+    "introText": "是一款新一代的去中心化金融（DeFi）平台，旨在在兼容 EVM 的区块链生态系统中提供流动性提供、质押、交易和资产池等核心 DEX 功能。",
+    "mission": "我们的使命是构建一个强大、安全、用户友好的去中心化交易所（DEX），以透明度、安全性和高效性为基础。"
+  },
+  "Language": {
+    "label": "语言",
+    "options": {
+      "en": "English",
+      "es": "Español",
+      "fr": "Français",
+      "zh": "中文"
+    }
+  },
+  "Dashboard": {
+    "title": "仪表板"
+  },
+  "Portfolio": {
+    "title": "投资组合"
+  },
+  "Explore": {
+    "title": "探索"
+  },
+  "Swap": {
+    "title": "兑换"
+  },
+  "Tokens": {
+    "title": "代币"
+  },
+  "Pool": {
+    "title": "资金池"
+  },
+  "About": {
+    "title": "关于"
+  },
+  "Docs": {
+    "title": "文档"
+  },
+  "Support": {
+    "title": "支持"
+  },
+  "FAQ": {
+    "title": "常见问题"
+  },
+  "PrivacyPolicy": {
+    "title": "隐私政策"
+  }
+}
