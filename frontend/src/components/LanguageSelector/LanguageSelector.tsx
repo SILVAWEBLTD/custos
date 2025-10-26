@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   useCallback,
@@ -117,7 +117,7 @@ export function LanguageSelector() {
             triggerRef.current?.focus();
           }}
         >
-          <Globe className="h-4 w-4" aria-hidden="true" />
+          <Globe className="h-4 w-4 cursor-pointer" aria-hidden="true" />
         </button>
         <Select
           value={selectedLocale}
