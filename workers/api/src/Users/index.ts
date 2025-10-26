@@ -44,7 +44,6 @@ users.get('/', zValidator('query', KeysetQuerySchema), async (c) => {
     const nextCursor = items.length ? items[items.length - 1].id : undefined;
     if (nextCursor) c.header('X-Next-Cursor', String(nextCursor));
 
-    console.log('Returning users:', items);
     return c.json(items);
   } catch (error) {
     console.error('Error fetching users:', error);
