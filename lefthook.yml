@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  commands:
+    prettier:
+      glob: '*.{js,jsx,ts,tsx,json,css,scss,md}'
+      run: bunx prettier --check {staged_files}
+      skip_empty: true
+    eslint:
+      run: bun run lint
+    typecheck:
+      run: bun run typecheck
