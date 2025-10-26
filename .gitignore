@@ -133,3 +133,4 @@ wrangler.toml.bak
 
 # Ignore Steps file
 steps.md
+*.sketch
