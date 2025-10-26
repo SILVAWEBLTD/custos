@@ -6,7 +6,7 @@ import { FlipWords } from '@/components/ui/flip-words';
 import type { Locale } from '@/i18n';
 
 type HomePageProps = {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 };
 
 export default async function HomePage({ params }: HomePageProps) {

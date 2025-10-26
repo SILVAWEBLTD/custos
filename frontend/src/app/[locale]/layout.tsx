@@ -7,18 +7,20 @@ import { locales, type Locale } from '@/i18n';
 
 type LocaleLayoutProps = {
   children: ReactNode;
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
 };
 
 export default async function LocaleLayout({
   children,
   params,
 }: LocaleLayoutProps) {
-  const { locale } = await params;
+  const { locale: rawLocale } = await params;
 
-  if (!locales.includes(locale)) {
+  if (!locales.includes(rawLocale as Locale)) {
     notFound();
   }
+
+  const locale = rawLocale as Locale;
 
   setRequestLocale(locale);
   const messages = await getMessages({ locale });
