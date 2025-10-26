@@ -1,4 +1,7 @@
-https://custos.space
+<p align="center">
+  <img src="https://i.postimg.cc/Qx6LtVP2/custos-logo.png" alt="Custos logo" width="160" />
+</p>
+
 
 # Project Structure:
 
