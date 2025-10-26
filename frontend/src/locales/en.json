@@ -1,0 +1,56 @@
+{
+  "Home": {
+    "brand": "custos",
+    "flipWords": {
+      "space": ".space",
+      "defi": "DeFi",
+      "dex": "DEX",
+      "ai": "AI powered"
+    },
+    "introHighlight": "Custos, which is coming soon",
+    "introText": "is a next-generation decentralized finance (DeFi) platform designed to deliver core financial DEX functionalities such as liquidity provision, staking, trading, and asset pooling within the EVM-compatible blockchain ecosystem.",
+    "mission": "Our mission is to create a powerful, secure, user-friendly decentralized exchange (DEX) built on transparency, security, and efficiency."
+  },
+  "Language": {
+    "label": "Language",
+    "options": {
+      "en": "English",
+      "es": "Español",
+      "fr": "Français",
+      "zh": "中文"
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard"
+  },
+  "Portfolio": {
+    "title": "Portfolio"
+  },
+  "Explore": {
+    "title": "Explore"
+  },
+  "Swap": {
+    "title": "Swap"
+  },
+  "Tokens": {
+    "title": "Tokens"
+  },
+  "Pool": {
+    "title": "Pool"
+  },
+  "About": {
+    "title": "About"
+  },
+  "Docs": {
+    "title": "Docs"
+  },
+  "Support": {
+    "title": "Support"
+  },
+  "FAQ": {
+    "title": "FAQ"
+  },
+  "PrivacyPolicy": {
+    "title": "Privacy Policy"
+  }
+}

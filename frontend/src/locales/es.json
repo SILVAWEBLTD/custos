@@ -1,0 +1,56 @@
+{
+  "Home": {
+    "brand": "custos",
+    "flipWords": {
+      "space": ".espacio",
+      "defi": "DeFi",
+      "dex": "DEX",
+      "ai": "Impulsado por IA"
+    },
+    "introHighlight": "Custos, que llegará pronto",
+    "introText": "es una plataforma de finanzas descentralizadas (DeFi) de próxima generación diseñada para ofrecer funcionalidades financieras esenciales como provisión de liquidez, staking, trading y agrupación de activos dentro del ecosistema blockchain compatible con EVM.",
+    "mission": "Nuestra misión es crear un exchange descentralizado (DEX) potente, seguro y fácil de usar, construido sobre transparencia, seguridad y eficiencia."
+  },
+  "Language": {
+    "label": "Idioma",
+    "options": {
+      "en": "English",
+      "es": "Español",
+      "fr": "Français",
+      "zh": "中文"
+    }
+  },
+  "Dashboard": {
+    "title": "Panel"
+  },
+  "Portfolio": {
+    "title": "Cartera"
+  },
+  "Explore": {
+    "title": "Explorar"
+  },
+  "Swap": {
+    "title": "Intercambiar"
+  },
+  "Tokens": {
+    "title": "Tokens"
+  },
+  "Pool": {
+    "title": "Fondo"
+  },
+  "About": {
+    "title": "Acerca de"
+  },
+  "Docs": {
+    "title": "Documentos"
+  },
+  "Support": {
+    "title": "Soporte"
+  },
+  "FAQ": {
+    "title": "Preguntas frecuentes"
+  },
+  "PrivacyPolicy": {
+    "title": "Política de privacidad"
+  }
+}
