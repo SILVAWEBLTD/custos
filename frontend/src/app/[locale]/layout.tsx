@@ -10,10 +10,7 @@ type LocaleLayoutProps = {
   params: Promise<{ locale: string }>;
 };
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: LocaleLayoutProps) {
+export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale: rawLocale } = await params;
 
   if (!locales.includes(rawLocale as Locale)) {
