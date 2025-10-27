@@ -10,9 +10,7 @@ export const walletToast = {
    */
   connecting: (walletName?: string) => {
     const cleanName = walletName?.trim();
-    const message = cleanName
-      ? `Connecting to ${cleanName}...`
-      : 'Connecting wallet...';
+    const message = cleanName ? `Connecting to ${cleanName}...` : 'Connecting wallet...';
 
     return toast.loading(message, {
       id: 'wallet-connecting',
@@ -42,9 +40,7 @@ export const walletToast = {
    */
   disconnected: (walletName?: string) => {
     const cleanName = walletName?.trim();
-    const message = cleanName
-      ? `${cleanName} disconnected`
-      : 'Wallet disconnected';
+    const message = cleanName ? `${cleanName} disconnected` : 'Wallet disconnected';
 
     return toast.success(message, {
       duration: 3000,
@@ -164,7 +160,7 @@ export const appToast = {
       loading: string;
       success: string | ((data: T) => string);
       error: string | ((error: Error) => string);
-    }
+    },
   ) => {
     return toast.promise(promise, messages);
   },

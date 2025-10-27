@@ -3,13 +3,7 @@
 import * as React from 'react';
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -50,7 +44,7 @@ export default function ChartAreaInteractive({
   }));
 
   return (
-    <Card className="pt-0 bg-black border-gray-700">
+    <Card className="border-gray-700 bg-black pt-0">
       <CardHeader className="flex items-center py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>Portfolio Overview</CardTitle>
@@ -62,33 +56,17 @@ export default function ChartAreaInteractive({
       <CardContent className="px-2 sm:px-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full chart-white-axes"
+          className="chart-white-axes aspect-auto h-[250px] w-full"
         >
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-value)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-value)"
-                  stopOpacity={0.1}
-                />
+                <stop offset="5%" stopColor="var(--color-value)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-value)" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="fillPrice" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-price)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-price)"
-                  stopOpacity={0.1}
-                />
+                <stop offset="5%" stopColor="var(--color-price)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-price)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} />
@@ -108,12 +86,7 @@ export default function ChartAreaInteractive({
             />
             <ChartTooltip
               cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => value}
-                  indicator="dot"
-                />
-              }
+              content={<ChartTooltipContent labelFormatter={(value) => value} indicator="dot" />}
             />
             <Area
               dataKey="value"

@@ -8,11 +8,7 @@ export const metadata: Metadata = {
   description: 'Portfolio dashboard',
 };
 
-export default function PortfolioLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function PortfolioLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Web3ModalProvider>{children}</Web3ModalProvider>

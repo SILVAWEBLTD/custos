@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Globe } from 'lucide-react';
 
@@ -43,14 +36,11 @@ export function LanguageSelector() {
         value,
         label: t(`options.${value}`),
       })),
-    [t]
+    [t],
   );
 
   const handleLocaleChange = useCallback(
-    (
-      nextLocale: Locale,
-      { skipStateUpdate = false }: HandleLocaleChangeConfig = {}
-    ) => {
+    (nextLocale: Locale, { skipStateUpdate = false }: HandleLocaleChangeConfig = {}) => {
       if (!skipStateUpdate) {
         setSelectedLocale(nextLocale);
       }
@@ -64,7 +54,7 @@ export function LanguageSelector() {
         router.refresh();
       });
     },
-    [pathname, router, startTransition]
+    [pathname, router, startTransition],
   );
 
   useEffect(() => {
@@ -88,8 +78,8 @@ export function LanguageSelector() {
     const navigatorLocales = navigator.languages?.length
       ? navigator.languages
       : navigator.language
-      ? [navigator.language]
-      : [];
+        ? [navigator.language]
+        : [];
 
     const matchedLocale = navigatorLocales
       .map((navLocale) => navLocale.toLowerCase())
@@ -109,7 +99,7 @@ export function LanguageSelector() {
       <div className="flex items-center">
         <button
           type="button"
-          className="mr-2 inline-flex h-6 w-6 items-center justify-center text-gray-400 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
+          className="mr-2 inline-flex h-6 w-6 items-center justify-center text-gray-400 hover:text-white focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:outline-none"
           title={t('label')}
           aria-label={t('label')}
           onClick={() => {

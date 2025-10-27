@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -59,7 +59,7 @@ export function FlipWords({ words, duration = 3000, className }: FlipWordsProps)
         }}
         className={cn(
           'relative z-10 inline-block px-2 text-left text-neutral-900 dark:text-neutral-100',
-          className
+          className,
         )}
       >
         {currentWord.split(' ').map((word, wordIndex) => (

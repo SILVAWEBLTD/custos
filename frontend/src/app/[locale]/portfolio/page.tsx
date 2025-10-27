@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -134,16 +128,11 @@ export default function CryptoDashboard() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className="border-gray-700 bg-black">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white">
-                Total Portfolio
-              </CardTitle>
+              <CardTitle className="text-sm font-medium text-white">Total Portfolio</CardTitle>
               <DollarSign className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div
-                className="text-2xl font-bold"
-                style={{ color: 'oklch(70.8% 0 0)' }}
-              >
+              <div className="text-2xl font-bold" style={{ color: 'oklch(70.8% 0 0)' }}>
                 ${portfolioValue.toLocaleString()}
               </div>
               <div className="flex items-center text-xs text-gray-400">
@@ -152,11 +141,7 @@ export default function CryptoDashboard() {
                 ) : (
                   <TrendingDown className="mr-1 h-3 w-3 text-red-500" />
                 )}
-                <span
-                  className={
-                    changePercentage > 0 ? 'text-green-500' : 'text-red-500'
-                  }
-                >
+                <span className={changePercentage > 0 ? 'text-green-500' : 'text-red-500'}>
                   +${totalChange.toLocaleString()} ({changePercentage}%)
                 </span>
                 <span className="ml-1 text-gray-400">from last month</span>
@@ -166,16 +151,11 @@ export default function CryptoDashboard() {
 
           <Card className="border-gray-700 bg-black">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white">
-                Active Assets
-              </CardTitle>
+              <CardTitle className="text-sm font-medium text-white">Active Assets</CardTitle>
               <Activity className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div
-                className="text-2xl font-bold"
-                style={{ color: 'oklch(70.8% 0 0)' }}
-              >
+              <div className="text-2xl font-bold" style={{ color: 'oklch(70.8% 0 0)' }}>
                 {cryptoData.length}
               </div>
               <p className="text-xs text-gray-400">+2 from last month</p>
@@ -184,16 +164,11 @@ export default function CryptoDashboard() {
 
           <Card className="border-gray-700 bg-black">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white">
-                24h Volume
-              </CardTitle>
+              <CardTitle className="text-sm font-medium text-white">24h Volume</CardTitle>
               <BarChart3 className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div
-                className="text-2xl font-bold"
-                style={{ color: 'oklch(70.8% 0 0)' }}
-              >
+              <div className="text-2xl font-bold" style={{ color: 'oklch(70.8% 0 0)' }}>
                 $12,543
               </div>
               <p className="text-xs text-gray-400">+8.2% from yesterday</p>
@@ -202,16 +177,11 @@ export default function CryptoDashboard() {
 
           <Card className="border-gray-700 bg-black">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white">
-                Market Cap
-              </CardTitle>
+              <CardTitle className="text-sm font-medium text-white">Market Cap</CardTitle>
               <PieChart className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div
-                className="text-2xl font-bold"
-                style={{ color: 'oklch(70.8% 0 0)' }}
-              >
+              <div className="text-2xl font-bold" style={{ color: 'oklch(70.8% 0 0)' }}>
                 $1.2T
               </div>
               <p className="text-xs text-gray-400">+2.1% from yesterday</p>
@@ -235,28 +205,18 @@ export default function CryptoDashboard() {
                     className="flex items-center justify-between rounded-lg border border-gray-700 bg-black p-4"
                   >
                     <div className="flex items-center space-x-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                        <span className="text-lg font-bold text-white">
-                          {crypto.icon}
-                        </span>
+                      <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                        <span className="text-lg font-bold text-white">{crypto.icon}</span>
                       </div>
                       <div>
-                        <div
-                          className="font-medium"
-                          style={{ color: 'oklch(70.8% 0 0)' }}
-                        >
+                        <div className="font-medium" style={{ color: 'oklch(70.8% 0 0)' }}>
                           {crypto.name}
                         </div>
-                        <div className="text-sm text-gray-400">
-                          {crypto.symbol}
-                        </div>
+                        <div className="text-sm text-gray-400">{crypto.symbol}</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div
-                        className="font-medium"
-                        style={{ color: 'oklch(70.8% 0 0)' }}
-                      >
+                      <div className="font-medium" style={{ color: 'oklch(70.8% 0 0)' }}>
                         ${crypto.value.toLocaleString()}
                       </div>
                       <div className="text-sm text-gray-400">
@@ -264,17 +224,12 @@ export default function CryptoDashboard() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div
-                        className="font-medium"
-                        style={{ color: 'oklch(70.8% 0 0)' }}
-                      >
+                      <div className="font-medium" style={{ color: 'oklch(70.8% 0 0)' }}>
                         ${crypto.price.toLocaleString()}
                       </div>
                       <div
-                        className={`text-sm flex items-center ${
-                          crypto.changeType === 'up'
-                            ? 'text-green-500'
-                            : 'text-red-500'
+                        className={`flex items-center text-sm ${
+                          crypto.changeType === 'up' ? 'text-green-500' : 'text-red-500'
                         }`}
                       >
                         {crypto.changeType === 'up' ? (
@@ -329,27 +284,17 @@ export default function CryptoDashboard() {
                         )}
                       </div>
                       <div>
-                        <div
-                          className="font-medium"
-                          style={{ color: 'oklch(70.8% 0 0)' }}
-                        >
+                        <div className="font-medium" style={{ color: 'oklch(70.8% 0 0)' }}>
                           {transaction.type} {transaction.asset}
                         </div>
-                        <div className="text-sm text-gray-400">
-                          {transaction.amount}
-                        </div>
+                        <div className="text-sm text-gray-400">{transaction.amount}</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div
-                        className="font-medium"
-                        style={{ color: 'oklch(70.8% 0 0)' }}
-                      >
+                      <div className="font-medium" style={{ color: 'oklch(70.8% 0 0)' }}>
                         {transaction.value}
                       </div>
-                      <div className="text-sm text-gray-400">
-                        {transaction.time}
-                      </div>
+                      <div className="text-sm text-gray-400">{transaction.time}</div>
                     </div>
                   </div>
                 ))}
@@ -419,9 +364,7 @@ export default function CryptoDashboard() {
                             <p className="text-sm text-gray-400">Change</p>
                             <p
                               className={`flex items-center justify-end text-sm ${
-                                crypto.changeType === 'up'
-                                  ? 'text-green-500'
-                                  : 'text-red-500'
+                                crypto.changeType === 'up' ? 'text-green-500' : 'text-red-500'
                               }`}
                             >
                               {crypto.changeType === 'up' ? (

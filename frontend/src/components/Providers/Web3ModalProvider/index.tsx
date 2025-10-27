@@ -27,9 +27,7 @@ function WalletConnectionListener() {
   const [previousChainId, setPreviousChainId] = useState<number | undefined>();
   const [wasConnected, setWasConnected] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
-  const [lastConnectorName, setLastConnectorName] = useState<
-    string | undefined
-  >();
+  const [lastConnectorName, setLastConnectorName] = useState<string | undefined>();
   const [isModalInViewport, setIsModalInViewport] = useState(false);
 
   // Track previous connection state
@@ -165,7 +163,9 @@ export function Web3ModalProvider({ children }: { children: ReactNode }) {
       });
       modalCreated = true;
     }
-    setMounted(true);
+    const frame = requestAnimationFrame(() => setMounted(true));
+
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
