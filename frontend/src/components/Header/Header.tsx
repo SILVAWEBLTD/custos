@@ -30,7 +30,7 @@ export default function Header() {
 
   return (
     <header className="border-b border-gray-700 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
-      <div className="container mx-auto px-6 flex h-14 items-center">
+      <div className="container mx-auto flex h-14 items-center px-6">
         <div className="mr-4 flex">
           <h1 className="text-xl font-bold text-white">Custos</h1>
         </div>
@@ -50,27 +50,23 @@ export default function Header() {
               <div className="flex items-center">
                 <div className="flex flex-col items-end">
                   <div
-                    className="flex items-center gap-2 group cursor-pointer"
+                    className="group flex cursor-pointer items-center gap-2"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                   >
                     <button
                       onClick={handleCopyAddress}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      className="opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                       aria-label="Copy address"
                     >
                       <Copy className="h-3 w-3 text-gray-400 hover:text-gray-200" />
                     </button>
                     <p className="text-sm text-gray-200 transition-all duration-200">
-                      {isHovered
-                        ? address
-                        : `${address?.slice(0, 6)}...${address?.slice(-4)}`}
+                      {isHovered ? address : `${address?.slice(0, 6)}...${address?.slice(-4)}`}
                     </p>
                   </div>
                   <p className="text-xs text-gray-400">
-                    {balance
-                      ? `${formatEther(balance.value)} ${balance.symbol}`
-                      : ''}
+                    {balance ? `${formatEther(balance.value)} ${balance.symbol}` : ''}
                   </p>
                 </div>
                 <Button
@@ -85,7 +81,7 @@ export default function Header() {
             )}
           </div>
           <nav className="flex items-center space-x-2">
-            <div className="border border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white rounded-full p-2 transition-all cursor-pointer">
+            <div className="cursor-pointer rounded-full border border-gray-700 bg-black p-2 text-gray-200 transition-all hover:bg-gray-800 hover:text-white">
               <User className="h-4 w-4" />
             </div>
           </nav>

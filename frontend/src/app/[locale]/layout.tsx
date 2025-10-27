@@ -5,25 +5,27 @@ import type { ReactNode } from 'react';
 
 import { locales, type Locale } from '@/i18n';
 
+const isLocale = (value: string): value is Locale => locales.includes(value as Locale);
+
 type LocaleLayoutProps = {
-  children: ReactNode;
   params: Promise<{ locale: string }>;
+  children: ReactNode;
 };
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
-  const { locale: rawLocale } = await params;
+  const { locale } = await params;
 
-  if (!locales.includes(rawLocale as Locale)) {
+  if (!isLocale(locale)) {
     notFound();
   }
 
-  const locale = rawLocale as Locale;
+  const resolvedLocale = locale;
 
-  setRequestLocale(locale);
-  const messages = await getMessages({ locale });
+  setRequestLocale(resolvedLocale);
+  const messages = await getMessages({ locale: resolvedLocale });
 
   return (
-    <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
+    <NextIntlClientProvider key={resolvedLocale} locale={resolvedLocale} messages={messages}>
       {children}
     </NextIntlClientProvider>
   );

@@ -8,9 +8,7 @@ import { walletConnect } from 'wagmi/connectors';
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
 if (!walletConnectProjectId) {
-  throw new Error(
-    'NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not defined in environment variables'
-  );
+  throw new Error('NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not defined in environment variables');
 }
 
 export const config = createConfig({

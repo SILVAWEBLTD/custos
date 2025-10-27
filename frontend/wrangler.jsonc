@@ -6,17 +6,17 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
   "env": {
     "production": {
       "name": "custos-frontend-production",
-      "routes": ["custos.space/*", "www.custos.space/*"]
+      "routes": ["custos.space/*", "www.custos.space/*"],
     },
     "staging": {
       "name": "custos-frontend-staging",
       "routes": ["staging.custos.space/*", "www.staging.custos.space/*"],
-      "preview_urls": true
-    }
-  }
+      "preview_urls": true,
+    },
+  },
 }

@@ -1,19 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
-type WalletStatus = 'idle' | 'installing' | 'installed';
-
-interface WalletProvider {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  color: string;
-}
+import type { ConnectWalletProps, WalletProvider, WalletStatus } from './types';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
 const walletProviders: WalletProvider[] = [
   {
@@ -53,20 +45,8 @@ const walletProviders: WalletProvider[] = [
   },
 ];
 
-interface ConnectWalletProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  trigger?: React.ReactNode;
-}
-
-export default function ConnectWallet({
-  open,
-  onOpenChange,
-  trigger,
-}: ConnectWalletProps) {
-  const [walletStatuses, setWalletStatuses] = React.useState<
-    Record<string, WalletStatus>
-  >({});
+export default function ConnectWallet({ open, onOpenChange, trigger }: ConnectWalletProps) {
+  const [walletStatuses, setWalletStatuses] = React.useState<Record<string, WalletStatus>>({});
 
   const handleConnect = (walletId: string) => {
     // Simulate connection flow
@@ -89,9 +69,7 @@ export default function ConnectWallet({
     }
   };
 
-  const getButtonVariant = (
-    walletId: string
-  ): 'default' | 'outline' | 'secondary' => {
+  const getButtonVariant = (walletId: string): 'default' | 'outline' | 'secondary' => {
     const status = walletStatuses[walletId] || 'idle';
     if (status === 'installed') return 'secondary';
     return 'outline';
@@ -100,12 +78,10 @@ export default function ConnectWallet({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger}
-      <DialogContent className="max-w-md bg-black border-gray-700">
+      <DialogContent className="max-w-md border-gray-700 bg-black">
         {/* Header with title and close button */}
-        <div className="flex items-center justify-between pb-4 border-b border-gray-700">
-          <DialogTitle className="text-white text-xl font-semibold">
-            Connect Wallet
-          </DialogTitle>
+        <div className="flex items-center justify-between border-b border-gray-700 pb-4">
+          <DialogTitle className="text-xl font-semibold text-white">Connect Wallet</DialogTitle>
         </div>
 
         {/* Wallet providers list */}
@@ -113,11 +89,11 @@ export default function ConnectWallet({
           {walletProviders.map((wallet) => (
             <div
               key={wallet.id}
-              className="flex items-center justify-between p-4 border border-gray-700 rounded-lg bg-black hover:bg-gray-800/50 transition-colors"
+              className="flex items-center justify-between rounded-lg border border-gray-700 bg-black p-4 transition-colors hover:bg-gray-800/50"
             >
               <div className="flex items-center space-x-3">
                 <div
-                  className={`w-10 h-10 rounded-full ${wallet.color} flex items-center justify-center text-white font-bold`}
+                  className={`h-10 w-10 rounded-full ${wallet.color} flex items-center justify-center font-bold text-white`}
                 >
                   {wallet.icon.startsWith('/') ? (
                     <Image
@@ -125,7 +101,7 @@ export default function ConnectWallet({
                       alt={wallet.name}
                       width={24}
                       height={24}
-                      className="w-6 h-6"
+                      className="h-6 w-6"
                     />
                   ) : (
                     wallet.icon
@@ -133,9 +109,7 @@ export default function ConnectWallet({
                 </div>
                 <div>
                   <div className="font-medium text-white">{wallet.name}</div>
-                  <div className="text-sm text-gray-400">
-                    {wallet.description}
-                  </div>
+                  <div className="text-sm text-gray-400">{wallet.description}</div>
                 </div>
               </div>
               <Button
@@ -152,7 +126,7 @@ export default function ConnectWallet({
         </div>
 
         {/* Footer with request new wallet button */}
-        <div className="pt-4 border-t border-gray-700">
+        <div className="border-t border-gray-700 pt-4">
           <Button
             variant="outline"
             className="w-full border-gray-700 bg-black text-gray-200 hover:bg-gray-800 hover:text-white"
