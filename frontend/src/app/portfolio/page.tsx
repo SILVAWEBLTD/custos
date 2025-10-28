@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation';
+import { getLocale } from 'next-intl/server';
 
-export default function PortfolioRedirect() {
-  redirect('/en/portfolio');
+export default async function PortfolioRedirect() {
+  const locale = await getLocale();
+  redirect(`/${locale}/portfolio`);
 }
