@@ -45,7 +45,9 @@ export function useTokensData(options: UseTokensDataOptions = {}): UseTokensData
   const [network, setNetwork] = useState(options.initialNetwork ?? 'all');
   const [cursor, setCursor] = useState<string | null>(null);
   const currentCursor = parseCursorValue(cursor);
-  const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS);
+  const normalizedSearch = search.trim();
+  const debouncedSearch = useDebouncedValue(normalizedSearch, SEARCH_DEBOUNCE_MS);
+  const isSearchPending = normalizedSearch !== debouncedSearch;
 
   const queryKey = [
     'tokens',
@@ -91,7 +93,7 @@ export function useTokensData(options: UseTokensDataOptions = {}): UseTokensData
     return (await response.json()) as TokensApiResponse;
   }, [cursor, debouncedSearch, network, pageLimit]);
 
-  const { data, error, status, isLoading, isFetching, isRefetching, isPaused, refetch } = useQuery<
+  const { data, error, status, isLoading, isFetching, isRefetching, refetch } = useQuery<
     TokensApiResponse,
     Error
   >({
@@ -147,6 +149,7 @@ export function useTokensData(options: UseTokensDataOptions = {}): UseTokensData
       isLoading,
       isFetching,
       isRefetching,
+      isSearchPending,
       isPaginating,
       error: error ? error.message : null,
       search,
@@ -168,6 +171,7 @@ export function useTokensData(options: UseTokensDataOptions = {}): UseTokensData
       isLoading,
       isFetching,
       isRefetching,
+      isSearchPending,
       isPaginating,
       error,
       search,

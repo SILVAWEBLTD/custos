@@ -22,6 +22,7 @@ export interface UseTokensDataResult {
   isLoading: boolean;
   isFetching: boolean;
   isRefetching: boolean;
+  isSearchPending: boolean;
   isPaginating: boolean;
   error: string | null;
   search: string;
