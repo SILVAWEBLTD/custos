@@ -1,4 +1,11 @@
 export type Bindings = {
   DB: D1Database;
   CORS_ORIGIN?: string;
+  TOKEN_METRICS_API_KEY: string;
+  TOKEN_METRICS_BASE_URL?: string;
+  TOKEN_METRICS_API_VERSION?: string;
+  TOKEN_METRICS_TIMEOUT_MS?: string;
+  TOKEN_METRICS_TOKENS_CACHE_TTL?: string;
+  TOKEN_METRICS_SPARKLINE_CACHE_TTL?: string;
+  TOKEN_METRICS_SPARKLINE_LIMIT?: string;
 };

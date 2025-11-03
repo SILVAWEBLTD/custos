@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { users } from './Users';
 import { posts } from './Posts';
 import { healthcheck } from './Healthcheck';
+import { tokens } from './Tokens';
 import type { Bindings } from './types';
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -32,6 +33,7 @@ app.route('/users', users);
 app.route('/posts', posts);
 app.route('/healthcheck', healthcheck);
 app.route('/health', healthcheck);
+app.route('/tokens', tokens);
 
 // Error handler middleware
 app.onError((err, c) => {
