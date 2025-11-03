@@ -1,8 +1,7 @@
 import type { TokensApiMeta } from '@/types/token-table';
 
 const DEFAULT_CURRENCY = 'USD';
-
-export const DEFAULT_PAGE_SIZE = 50;
+export const DEFAULT_PAGE_SIZE = 20;
 export const SEARCH_DEBOUNCE_MS = 300;
 export const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 

@@ -31,6 +31,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          TOKEN_METRICS_API_KEY: ${{ secrets.TOKEN_METRICS_API_KEY }}
 
       - name: Post-deploy summary
         run: |

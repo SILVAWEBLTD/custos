@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { type ReactNode } from 'react';
 
-import { Web3ModalProvider } from '@/components/Providers/Web3ModalProvider';
 import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 export default function PortfolioLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <Web3ModalProvider>{children}</Web3ModalProvider>
+      {children}
       <Toaster />
     </>
   );
