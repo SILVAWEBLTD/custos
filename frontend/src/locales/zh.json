@@ -29,6 +29,39 @@
   "Explore": {
     "title": "探索"
   },
+  "ExploreTokensPage": {
+    "title": "探索 DeFi 代币",
+    "subtitle": "关注精选的 DEX 上市代币，每五分钟刷新市场数据。"
+  },
+  "ExploreTokens": {
+    "title": "热门代币",
+    "description": "监控活跃链上资产的价格走势、流动性和情绪。",
+    "searchPlaceholder": "按代币名称或符号搜索",
+    "searchAriaLabel": "搜索代币",
+    "networkAll": "全部网络",
+    "networkAriaLabel": "按网络筛选代币",
+    "refreshLabel": "刷新代币数据",
+    "lastUpdated": "上次更新 {value}",
+    "errorTitle": "无法加载代币数据",
+    "errorRetry": "重试",
+    "emptyTitle": "未找到代币",
+    "emptySubtitle": "调整筛选条件或尝试其他搜索。",
+    "columns": {
+      "rank": "#",
+      "token": "代币",
+      "price": "价格",
+      "change24h": "24 小时",
+      "volume": "交易量（24 小时）",
+      "marketCap": "市值",
+      "sparkline": "1 日趋势"
+    },
+    "pagination": {
+      "noResults": "暂无结果",
+      "range": "显示 {start} - {end}",
+      "previous": "上一页",
+      "next": "下一页"
+    }
+  },
   "Swap": {
     "title": "兑换"
   },
