@@ -3,6 +3,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 
+import { AppProviders } from '@/components/Providers/AppProviders';
 import { locales, type Locale } from '@/i18n';
 
 const isLocale = (value: string): value is Locale => locales.includes(value as Locale);
@@ -26,7 +27,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   return (
     <NextIntlClientProvider key={resolvedLocale} locale={resolvedLocale} messages={messages}>
-      {children}
+      <AppProviders>{children}</AppProviders>
     </NextIntlClientProvider>
   );
 }
