@@ -40,7 +40,7 @@ jobs:
             echo "TOKEN_METRICS_API_KEY secret is not set" >&2
             exit 1
           fi
-          printf '%s' "$TOKEN_METRICS_API_KEY" | bunx wrangler secret put TOKEN_METRICS_API_KEY -c wrangler.jsonc -e staging --non-interactive
+          printf '%s' "$TOKEN_METRICS_API_KEY" | bunx wrangler secret put TOKEN_METRICS_API_KEY -c wrangler.jsonc -e staging
 
       - name: Deploy to Cloudflare Workers (staging)
         env:
