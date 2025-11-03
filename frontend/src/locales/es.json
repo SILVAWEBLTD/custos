@@ -29,6 +29,39 @@
   "Explore": {
     "title": "Explorar"
   },
+  "ExploreTokensPage": {
+    "title": "Explorar tokens DeFi",
+    "subtitle": "Sigue activos seleccionados listados en DEX con datos actualizados cada cinco minutos."
+  },
+  "ExploreTokens": {
+    "title": "Tokens en tendencia",
+    "description": "Supervisa la acción del precio, la liquidez y el sentimiento de los activos on-chain más activos.",
+    "searchPlaceholder": "Buscar por nombre o símbolo de token",
+    "searchAriaLabel": "Buscar tokens",
+    "networkAll": "Todas las redes",
+    "networkAriaLabel": "Filtrar tokens por red",
+    "refreshLabel": "Actualizar datos de tokens",
+    "lastUpdated": "Última actualización {value}",
+    "errorTitle": "No se pudieron cargar los datos de tokens",
+    "errorRetry": "Intentar de nuevo",
+    "emptyTitle": "No se encontraron tokens",
+    "emptySubtitle": "Ajusta tus filtros o prueba con otra búsqueda.",
+    "columns": {
+      "rank": "#",
+      "token": "Token",
+      "price": "Precio",
+      "change24h": "24h",
+      "volume": "Volumen (24h)",
+      "marketCap": "Capitalización",
+      "sparkline": "Tendencia 1D"
+    },
+    "pagination": {
+      "noResults": "Sin resultados",
+      "range": "Mostrando {start} - {end}",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
+  },
   "Swap": {
     "title": "Intercambiar"
   },

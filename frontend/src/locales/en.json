@@ -29,6 +29,39 @@
   "Explore": {
     "title": "Explore"
   },
+  "ExploreTokensPage": {
+    "title": "Explore DeFi tokens",
+    "subtitle": "Track curated DEX-listed assets with refreshed market data every five minutes."
+  },
+  "ExploreTokens": {
+    "title": "Trending tokens",
+    "description": "Monitor price action, liquidity and sentiment for the most active on-chain assets.",
+    "searchPlaceholder": "Search by token name or symbol",
+    "searchAriaLabel": "Search tokens",
+    "networkAll": "All networks",
+    "networkAriaLabel": "Filter tokens by network",
+    "refreshLabel": "Refresh token data",
+    "lastUpdated": "Last updated {value}",
+    "errorTitle": "Unable to load token data",
+    "errorRetry": "Try again",
+    "emptyTitle": "No tokens found",
+    "emptySubtitle": "Adjust your filters or try a different search query.",
+    "columns": {
+      "rank": "#",
+      "token": "Token",
+      "price": "Price",
+      "change24h": "24h",
+      "volume": "Volume (24h)",
+      "marketCap": "Market cap",
+      "sparkline": "1D trend"
+    },
+    "pagination": {
+      "noResults": "No results",
+      "range": "Showing {start} - {end}",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
   "Swap": {
     "title": "Swap"
   },
