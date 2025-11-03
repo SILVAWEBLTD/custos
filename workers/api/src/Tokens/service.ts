@@ -1,4 +1,4 @@
-import { CURATED_TOKENS, CURATED_SYMBOL_LIST, CURATED_TOKEN_MAP, SUPPORTED_NETWORKS } from './config';
+import { SUPPORTED_NETWORKS } from './config';
 import { withCache, readCache, writeCache } from './cache';
 import { TokenMetricsClient } from './client';
 import type { Bindings } from '../types';
@@ -33,15 +33,22 @@ const TOKEN_NAME_KEYS = ['TOKEN_NAME', 'token_name', 'name'];
 const TOKEN_ID_KEYS = ['TOKEN_ID', 'token_id', 'id'];
 const TOKEN_PRICE_KEYS = ['CURRENT_PRICE', 'current_price', 'price'];
 const MARKET_CAP_KEYS = ['MARKET_CAP', 'market_cap', 'marketCap'];
-const VOLUME_KEYS = ['TOTAL_VOLUME', 'total_volume', 'volume', 'volume_24h', 'volume24h'];
-const PRICE_CHANGE_KEYS = [
-  'PRICE_CHANGE_PERCENTAGE_24H_IN_CURRENCY',
-  'PRICE_CHANGE_PERCENTAGE_24H',
-  'price_change_percentage_24h_in_currency',
-  'price_change_percentage_24h',
-  'price_change_24h',
+const VOLUME_KEYS = [
+  'TOTAL_VOLUME',
+  'total_volume',
+  'volume',
+  'volume_24h',
+  'volume24h',
 ];
-const UPDATED_AT_KEYS = ['UPDATED_AT', 'updated_at', 'last_updated', 'lastUpdated'];
+const PRICE_CHANGE_KEYS = ['price_change_percentage_24_h_in_currency'];
+const HIGH_24H_KEYS = ['high_24_h'];
+const LOW_24H_KEYS = ['low_24_h'];
+const UPDATED_AT_KEYS = [
+  'UPDATED_AT',
+  'updated_at',
+  'last_updated',
+  'lastUpdated',
+];
 
 const OHLCV_SYMBOL_KEYS = ['TOKEN_SYMBOL', 'token_symbol', 'symbol'];
 const OHLCV_DATE_KEYS = ['DATE', 'date', 'timestamp'];
@@ -75,24 +82,34 @@ const toStringValue = (value: unknown): string | undefined => {
   return undefined;
 };
 
-const getFieldValue = <T>(row: Record<string, unknown>, keys: string[], convert: (value: unknown) => T | undefined): T | undefined => {
+const getFieldValue = <T>(
+  row: Record<string, unknown>,
+  keys: string[],
+  convert: (value: unknown) => T | undefined
+): T | undefined => {
   for (const key of keys) {
     if (Object.prototype.hasOwnProperty.call(row, key)) {
-      const value = convert(row[key]);
-      if (value !== undefined) {
-        return value;
+      const rawValue = row[key];
+      const convertedValue = convert(rawValue);
+      if (convertedValue !== undefined) {
+        return convertedValue;
       }
+    } else {
     }
   }
 
   return undefined;
 };
 
-const getStringField = (row: Record<string, unknown>, keys: string[]): string | undefined =>
-  getFieldValue(row, keys, toStringValue);
+const getStringField = (
+  row: Record<string, unknown>,
+  keys: string[]
+): string | undefined => getFieldValue(row, keys, toStringValue);
 
-const getNumberField = (row: Record<string, unknown>, keys: string[]): number | undefined =>
-  getFieldValue(row, keys, toNumber);
+const getNumberField = (
+  row: Record<string, unknown>,
+  keys: string[]
+): number | undefined => getFieldValue(row, keys, toNumber);
 
 const extractDataArray = <T>(response: unknown): T[] => {
   if (!response || typeof response !== 'object') {
@@ -106,9 +123,10 @@ const extractDataArray = <T>(response: unknown): T[] => {
   }
 
   if (data && typeof data === 'object') {
-    const nested = (data as Record<string, unknown>).data
-      ?? (data as Record<string, unknown>).items
-      ?? (data as Record<string, unknown>).results;
+    const nested =
+      (data as Record<string, unknown>).data ??
+      (data as Record<string, unknown>).items ??
+      (data as Record<string, unknown>).results;
 
     if (Array.isArray(nested)) {
       return nested as T[];
@@ -138,7 +156,9 @@ const extractTokenPrice = (row: TokenMetricsTokenRow): number | undefined => {
   return getNumberField(row, TOKEN_PRICE_KEYS);
 };
 
-const extractTokenMarketCap = (row: TokenMetricsTokenRow): number | undefined => {
+const extractTokenMarketCap = (
+  row: TokenMetricsTokenRow
+): number | undefined => {
   if (!row) return undefined;
   return getNumberField(row, MARKET_CAP_KEYS);
 };
@@ -148,12 +168,16 @@ const extractTokenVolume = (row: TokenMetricsTokenRow): number | undefined => {
   return getNumberField(row, VOLUME_KEYS);
 };
 
-const extractTokenPriceChange = (row: TokenMetricsTokenRow): number | undefined => {
+const extractTokenPriceChange = (
+  row: TokenMetricsTokenRow
+): number | undefined => {
   if (!row) return undefined;
   return getNumberField(row, PRICE_CHANGE_KEYS);
 };
 
-const extractTokenUpdatedAt = (row: TokenMetricsTokenRow): string | undefined => {
+const extractTokenUpdatedAt = (
+  row: TokenMetricsTokenRow
+): string | undefined => {
   if (!row) return undefined;
   return getStringField(row, UPDATED_AT_KEYS);
 };
@@ -191,7 +215,10 @@ const getClient = (env: Bindings): TokenMetricsClient => {
   const rawVersion = env.TOKEN_METRICS_API_VERSION?.toLowerCase();
   const apiVersion = rawVersion === 'v2' ? 'v2' : 'v3';
   const defaultBaseUrl = DEFAULT_BASE_URLS[apiVersion];
-  const baseUrl = (env.TOKEN_METRICS_BASE_URL ?? defaultBaseUrl).replace(/\/$/, '');
+  const baseUrl = (env.TOKEN_METRICS_BASE_URL ?? defaultBaseUrl).replace(
+    /\/$/,
+    ''
+  );
   const timeoutMs = Number(env.TOKEN_METRICS_TIMEOUT_MS ?? DEFAULT_TIMEOUT);
   const key = `${apiKey}:${baseUrl}:${timeoutMs}:${apiVersion}`;
 
@@ -213,33 +240,34 @@ async function fetchCuratedQuotes(env: Bindings): Promise<CachedQuotesPayload> {
   const client = getClient(env);
 
   const response: TokenMetricsTokensResponse = await client.fetchTokens({
-    token_symbol: CURATED_SYMBOL_LIST,
-    limit: CURATED_TOKENS.length,
+    limit: MAX_PAGE_LIMIT, // Fetch a reasonable maximum number of tokens
   });
 
   const rows = extractDataArray<TokenMetricsTokenRow>(response);
-  const entries = rows
+
+  const quotes: TokenQuote[] = rows
     .map((row) => {
       const symbol = extractTokenSymbol(row);
-      return symbol ? ([symbol, row] as const) : null;
+      const name = extractTokenName(row);
+
+      if (!symbol) {
+        return null;
+      }
+
+      return {
+        tokenId: extractTokenId(row) ?? null,
+        symbol: symbol,
+        name: name ?? symbol,
+        price: extractTokenPrice(row) ?? null,
+        marketCap: extractTokenMarketCap(row) ?? null,
+        volume24h: extractTokenVolume(row) ?? null,
+        high24h: getNumberField(row, HIGH_24H_KEYS) ?? null,
+        low24h: getNumberField(row, LOW_24H_KEYS) ?? null,
+        priceChange24h: extractTokenPriceChange(row) ?? null,
+        updatedAt: extractTokenUpdatedAt(row) ?? null,
+      };
     })
-    .filter((entry): entry is readonly [string, TokenMetricsTokenRow] => entry !== null);
-
-  const map = new Map(entries);
-
-  const quotes: TokenQuote[] = CURATED_TOKENS.map((token) => {
-    const match = map.get(token.symbol.toUpperCase());
-    return {
-      tokenId: match ? extractTokenId(match) ?? null : null,
-      symbol: token.symbol,
-      name: match ? extractTokenName(match) ?? token.name : token.name,
-      price: match ? extractTokenPrice(match) ?? null : null,
-      marketCap: match ? extractTokenMarketCap(match) ?? null : null,
-      volume24h: match ? extractTokenVolume(match) ?? null : null,
-      priceChange24h: match ? extractTokenPriceChange(match) ?? null : null,
-      updatedAt: match ? extractTokenUpdatedAt(match) ?? null : null,
-    };
-  });
+    .filter((quote): quote is TokenQuote => quote !== null);
 
   const fetchedAt = new Date().toISOString();
 
@@ -247,8 +275,10 @@ async function fetchCuratedQuotes(env: Bindings): Promise<CachedQuotesPayload> {
 }
 
 async function getCuratedQuotes(env: Bindings): Promise<CachedQuotesPayload> {
-  const ttl = getTokensCacheTtl(env);
-  return withCache<CachedQuotesPayload>(TOKENS_CACHE_KEY, ttl, () => fetchCuratedQuotes(env));
+  const ttl = 0; // Temporarily set TTL to 0 for debugging
+  return withCache<CachedQuotesPayload>(TOKENS_CACHE_KEY, ttl, () =>
+    fetchCuratedQuotes(env)
+  );
 }
 
 const parseCursor = (cursor: string | null | undefined): number => {
@@ -262,7 +292,11 @@ const parseCursor = (cursor: string | null | undefined): number => {
   return Math.floor(numeric);
 };
 
-const buildPaginationMeta = (total: number, startIndex: number, limit: number): PaginationMeta => {
+const buildPaginationMeta = (
+  total: number,
+  startIndex: number,
+  limit: number
+): PaginationMeta => {
   const nextIndex = startIndex + limit;
   const hasMore = nextIndex < total;
   return {
@@ -276,7 +310,7 @@ async function getSparklineForSymbols(
   env: Bindings,
   symbols: string[],
   ttlSeconds: number,
-  limit: number,
+  limit: number
 ): Promise<Map<string, TokenSparklinePoint[]>> {
   const client = getClient(env);
   const result = new Map<string, TokenSparklinePoint[]>();
@@ -284,13 +318,15 @@ async function getSparklineForSymbols(
 
   await Promise.all(
     symbols.map(async (symbol) => {
-      const cached = await readCache<TokenSparklinePoint[]>(`token-metrics:sparkline:${symbol}`);
+      const cached = await readCache<TokenSparklinePoint[]>(
+        `token-metrics:sparkline:${symbol}`
+      );
       if (cached) {
         result.set(symbol, cached);
       } else {
         missing.push(symbol);
       }
-    }),
+    })
   );
 
   if (missing.length === 0) {
@@ -329,11 +365,13 @@ async function getSparklineForSymbols(
     missing.map(async (symbol) => {
       const points = (grouped.get(symbol) ?? [])
         .slice()
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        .sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
 
       await writeCache(`token-metrics:sparkline:${symbol}`, points, ttlSeconds);
       result.set(symbol, points);
-    }),
+    })
   );
 
   return result;
@@ -351,32 +389,16 @@ function computeNetworkCounts(tokens: TokenQuote[], searchTerm?: string) {
 
   const counts = new Map<string, number>();
   for (const token of filtered) {
-    const config = CURATED_TOKEN_MAP.get(token.symbol);
-    if (!config) continue;
-    for (const network of config.networks) {
-      counts.set(network, (counts.get(network) ?? 0) + 1);
-    }
+    // Since CURATED_TOKEN_MAP is no longer used, and network information is not directly
+    // available from the API response for non-curated tokens, network counts will be 0.
+    // If network filtering/display is required, a new source for network data is needed.
   }
 
   return SUPPORTED_NETWORKS.map(({ id, label }) => ({
     id,
     label,
-    count: counts.get(id) ?? 0,
+    count: 0,
   }));
-}
-
-function mergeQuoteWithConfig(quote: TokenQuote): TokenTableRow {
-  const config = CURATED_TOKEN_MAP.get(quote.symbol);
-  if (!config) {
-    throw new Error(`Missing curated config for token ${quote.symbol}`);
-  }
-
-  return {
-    ...quote,
-    rank: config.rank,
-    networks: config.networks,
-    sparkline: [],
-  };
 }
 
 export interface GetTokensTableParams {
@@ -384,14 +406,18 @@ export interface GetTokensTableParams {
   limit?: number;
   search?: string;
   network?: string | null;
+  includeSparkline?: boolean;
 }
 
 export async function getTokensTable(
   env: Bindings,
-  params: GetTokensTableParams,
+  params: GetTokensTableParams
 ): Promise<TokensApiResponse> {
-  const { cursor, limit, search, network } = params;
-  const pageLimit = Math.min(Math.max(limit ?? DEFAULT_PAGE_LIMIT, 1), MAX_PAGE_LIMIT);
+  const { cursor, limit, search, network, includeSparkline } = params;
+  const pageLimit = Math.min(
+    Math.max(limit ?? DEFAULT_PAGE_LIMIT, 1),
+    MAX_PAGE_LIMIT
+  );
   const startIndex = parseCursor(cursor);
 
   const { quotes, fetchedAt } = await getCuratedQuotes(env);
@@ -399,7 +425,12 @@ export async function getTokensTable(
   const searchTerm = search?.toLowerCase().trim() ?? '';
 
   const searchFiltered = quotes
-    .map(mergeQuoteWithConfig)
+    .map((quote, index) => ({
+      ...quote,
+      rank: index + 1, // Assign a default rank based on order
+      networks: [], // Assign empty array for networks
+      sparkline: [],
+    }))
     .filter((token) => {
       if (!searchTerm) {
         return true;
@@ -413,20 +444,20 @@ export async function getTokensTable(
 
   const availableNetworks = computeNetworkCounts(quotes, searchTerm);
 
-  const networkFiltered = network && network !== 'all'
-    ? searchFiltered.filter((token) => token.networks.includes(network))
-    : searchFiltered;
+  // Network filtering is removed as 'networks' are no longer sourced from CURATED_TOKEN_MAP.
+  // If network filtering is still required, a new source for network data needs to be implemented.
+  const networkFiltered = searchFiltered;
 
   const paginated = networkFiltered.slice(startIndex, startIndex + pageLimit);
 
-  const sparklineTtl = getSparklineCacheTtl(env);
-  const sparklineLimit = getSparklineLimit(env);
-  const sparklineMap = await getSparklineForSymbols(
-    env,
-    paginated.map((token) => token.symbol),
-    sparklineTtl,
-    sparklineLimit,
-  );
+  const sparklineMap = await (includeSparkline && env.TOKEN_METRICS_API_KEY
+    ? getSparklineForSymbols(
+        env,
+        paginated.map((token) => token.symbol),
+        getSparklineCacheTtl(env),
+        getSparklineLimit(env)
+      )
+    : Promise.resolve(new Map<string, TokenSparklinePoint[]>()));
 
   const data: TokenTableRow[] = paginated.map((token) => ({
     ...token,

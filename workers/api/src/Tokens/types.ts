@@ -22,6 +22,8 @@ export interface TokenQuote {
   marketCap: number | null;
   volume24h: number | null;
   priceChange24h: number | null;
+  high24h: number | null;
+  low24h: number | null;
   updatedAt: string | null;
 }
 
