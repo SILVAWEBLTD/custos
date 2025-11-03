@@ -10,7 +10,7 @@ export function Search({ icon, children, className, ...props }: SearchProps) {
   return (
     <div
       className={cn(
-        'bg-muted/40 text-muted-foreground border-muted/60 flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm transition-colors hover:border-white/40 hover:text-white',
+        'flex w-full items-center gap-2 rounded-sm border border-gray-700 bg-black/80 px-3 py-2 text-sm text-white transition-colors focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-offset-0 hover:bg-gray-900',
         className,
       )}
       {...props}

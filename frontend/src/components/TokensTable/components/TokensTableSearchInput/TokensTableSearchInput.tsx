@@ -22,11 +22,11 @@ export function TokensTableSearchInput({
         autoComplete="off"
         spellCheck={false}
         aria-label={props['aria-label']}
-        className="border-transparent bg-transparent pr-8 pl-0 text-sm focus-visible:border-transparent focus-visible:ring-0"
+        className="placeholder:text-muted-foreground/70 border-none bg-transparent px-0 pr-8 text-sm text-white shadow-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0"
         {...props}
       />
       {isLoading && (
-        <Loader2 className="text-muted-foreground absolute top-1/2 right-2 h-3.5 w-3.5 -translate-y-1/2 animate-spin" />
+        <Loader2 className="text-muted-foreground/80 absolute top-1/2 right-2 h-3.5 w-3.5 -translate-y-1/2 animate-spin" />
       )}
     </div>
   );
