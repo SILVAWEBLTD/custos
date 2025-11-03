@@ -51,6 +51,8 @@
       "token": "代币",
       "price": "价格",
       "change24h": "24 小时",
+      "high24h": "24 小时最高",
+      "low24h": "24 小时最低",
       "volume": "交易量（24 小时）",
       "marketCap": "市值",
       "sparkline": "1 日趋势"

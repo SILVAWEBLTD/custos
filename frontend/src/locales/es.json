@@ -51,6 +51,8 @@
       "token": "Token",
       "price": "Precio",
       "change24h": "24h",
+      "high24h": "Máximo (24h)",
+      "low24h": "Mínimo (24h)",
       "volume": "Volumen (24h)",
       "marketCap": "Capitalización",
       "sparkline": "Tendencia 1D"
