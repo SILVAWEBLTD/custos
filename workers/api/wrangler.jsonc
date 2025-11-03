@@ -19,9 +19,7 @@
       ]
     },
     "development": {
-      "vars": {
-        "CORS_ORIGIN": "*"
-      },
+      "vars": {},
       "d1_databases": [
         {
           "binding": "DB",

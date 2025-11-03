@@ -6,7 +6,7 @@ export default async function ExploreTokensPage() {
   const t = await getTranslations('ExploreTokensPage');
 
   return (
-    <main className="bg-black text-white">
+    <main className="min-h-screen bg-black text-white">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 pt-12 pb-16">
         <header className="space-y-3">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t('title')}</h1>

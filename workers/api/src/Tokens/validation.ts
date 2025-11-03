@@ -5,4 +5,5 @@ export const TokensQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(25).optional(),
   search: z.string().optional(),
   network: z.string().optional(),
+  sparkline: z.string().optional(),
 });

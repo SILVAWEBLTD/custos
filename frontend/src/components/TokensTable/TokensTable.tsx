@@ -50,6 +50,7 @@ export function TokensTable({
     meta,
     isLoading,
     isFetching,
+    isSearchPending,
     error,
     search,
     setSearch,
@@ -68,6 +69,7 @@ export function TokensTable({
   const isInitialLoading = isLoading && tokens.length === 0;
   const showSkeleton = isInitialLoading;
   const processing = isFetching;
+  const searchIsLoading = isSearchPending || (isFetching && !isInitialLoading);
   const networkOptions = buildNetworkOptions(meta, t('networkAll'));
   const lastUpdated = formatLastUpdated(meta?.lastSyncTimestamp);
   const paginationStart = tokens.length === 0 ? 0 : currentCursor + 1;
@@ -91,7 +93,7 @@ export function TokensTable({
       <Table>
         <TableBody>
           {Array.from({ length: pageLimit }).map((_, rowIndex) => (
-            <TableRow key={`skeleton-${rowIndex}`} className="border-white/5">
+            <TableRow key={`skeleton-${rowIndex}`} className="border-white/5" disableHover>
               {skeletonWidths.map((width, cellIndex) => (
                 <TableCell key={cellIndex} className="py-3">
                   <Skeleton className={cn('h-4', width)} />
@@ -128,13 +130,15 @@ export function TokensTable({
   const renderTable = (displaySparkline: boolean) => (
     <Table>
       <TableHeader>
-        <TableRow className="border-white/5">
+        <TableRow className="border-white/5" disableHover>
           <TableHead className="w-10">{t('columns.rank')}</TableHead>
-          <TableHead>{t('columns.token')}</TableHead>
-          <TableHead className="text-right">{t('columns.price')}</TableHead>
-          <TableHead className="text-right">{t('columns.change24h')}</TableHead>
-          <TableHead className="text-right">{t('columns.volume')}</TableHead>
-          <TableHead className="text-right">{t('columns.marketCap')}</TableHead>
+          <TableHead className="text-gray-600">{t('columns.token')}</TableHead>
+          <TableHead className="text-right text-gray-600">{t('columns.price')}</TableHead>
+          <TableHead className="text-right text-gray-600">{t('columns.change24h')}</TableHead>
+          <TableHead className="text-right text-gray-600">{t('columns.high24h')}</TableHead>
+          <TableHead className="text-right text-gray-600">{t('columns.low24h')}</TableHead>
+          <TableHead className="text-right text-gray-600">{t('columns.volume')}</TableHead>
+          <TableHead className="text-right text-gray-600">{t('columns.marketCap')}</TableHead>
           {displaySparkline && (
             <TableHead className="text-right">{t('columns.sparkline')}</TableHead>
           )}
@@ -142,7 +146,7 @@ export function TokensTable({
       </TableHeader>
       <TableBody>
         {tokens.map((token) => (
-          <TableRow key={token.symbol} className="border-white/5">
+          <TableRow key={token.symbol} className="border-white/5 hover:bg-gray-900">
             <TableCell className="text-muted-foreground text-xs font-semibold">
               {token.rank}
             </TableCell>
@@ -157,6 +161,12 @@ export function TokensTable({
             </TableCell>
             <TableCell className="text-right">
               <TokensTablePriceChangeIndicator value={token.priceChange24h} />
+            </TableCell>
+            <TableCell className="text-right text-sm font-medium text-white">
+              {formatCurrency(token.high24h)}
+            </TableCell>
+            <TableCell className="text-right text-sm font-medium text-white">
+              {formatCurrency(token.low24h)}
             </TableCell>
             <TableCell className="text-right text-sm font-medium text-white">
               {formatNumber(token.volume24h)}
@@ -181,11 +191,18 @@ export function TokensTable({
   return (
     <Card className={cn('border-white/10 bg-black/40 backdrop-blur-xl', className)}>
       <CardHeader className="space-y-6">
-        <div className="space-y-1">
-          <CardTitle className="text-foreground text-lg font-semibold sm:text-xl">
-            {t('title')}
-          </CardTitle>
-          <CardDescription>{t('description')}</CardDescription>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-lg font-semibold text-white sm:text-xl">
+              {t('title')}
+            </CardTitle>
+            <CardDescription>{t('description')}</CardDescription>
+          </div>
+          {lastUpdated && (
+            <div className="text-muted-foreground text-xs sm:text-right">
+              {t('lastUpdated', { value: lastUpdated })}
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Search className="sm:max-w-xs md:max-w-sm">
@@ -193,16 +210,11 @@ export function TokensTable({
               value={search}
               onValueChange={setSearch}
               placeholder={t('searchPlaceholder')}
-              isLoading={isFetching && !isInitialLoading}
+              isLoading={searchIsLoading}
               aria-label={t('searchAriaLabel')}
             />
           </Search>
           <div className="flex items-center gap-3">
-            {lastUpdated && (
-              <div className="text-muted-foreground text-xs">
-                {t('lastUpdated', { value: lastUpdated })}
-              </div>
-            )}
             <Button
               size="icon"
               variant="ghost"
@@ -218,6 +230,7 @@ export function TokensTable({
               options={networkOptions}
               isLoading={processing}
               ariaLabel={t('networkAriaLabel')}
+              className="min-w-[160px] border-gray-700 bg-black/80 text-sm text-white hover:bg-gray-900 focus-visible:ring-gray-500"
             />
           </div>
         </div>

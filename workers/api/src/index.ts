@@ -18,6 +18,7 @@ app.use(
         .map((s: string) => s.trim())
         .filter(Boolean);
       const fallback = 'https://custos.space';
+      console.log('Debug CORS_ORIGIN value:', c.env?.CORS_ORIGIN, 'List:', list, 'Origin:', origin); // Temporary log
       if (list.length === 0) return fallback;
       return list.includes(origin) ? origin : '';
     },
